@@ -7,7 +7,7 @@ const Styles = styled.div`
   .dropdown {
     position: absolute;
     top: 60px;
-    right: -90px;
+    right: -80px;
     width: 200px;
     transform: translateX(-45%);
     background-color: #f8f8f8;
@@ -15,6 +15,7 @@ const Styles = styled.div`
     padding: 1rem;
     overflow: hidden;
     transition: height 500ms ease;
+    border-radius: 10px
   }
 
   .menu {
