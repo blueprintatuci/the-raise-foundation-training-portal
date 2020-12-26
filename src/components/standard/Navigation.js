@@ -9,7 +9,7 @@ import MainLogo from "../../assets/raise_logo_background.png";
 const Styles = styled.div`
   .navdiv {
     background: rgb(1,131,225);
-    background: linear-gradient(0deg, rgba(1,131,225,1) 0%, rgba(90,184,253,1) 100%);
+    background: linear-gradient(90deg, rgba(1,131,225,1) 0%, rgba(90,184,253,1) 100%);
   }
   .logo {
     font-family: "Montserrat", sans-serif;
