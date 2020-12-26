@@ -8,7 +8,8 @@ import MainLogo from "../../assets/raise_logo_background.png";
 
 const Styles = styled.div`
   .navdiv {
-    background: #0183e1;
+    background: rgb(1,131,225);
+    background: linear-gradient(0deg, rgba(1,131,225,1) 0%, rgba(90,184,253,1) 100%);
   }
   .logo {
     font-family: "Montserrat", sans-serif;
@@ -84,7 +85,7 @@ const MainNavbar = () => {
   const Navbar = (props) => {
     return (
       <nav className="navbar">
-        <span className="logo">Training Portal</span>
+        <span className="logo"><img src={MainLogo} height="60px" ></img></span>
         <span className="navbar-nav">
             <ul>{props.children}</ul>
         </span>
