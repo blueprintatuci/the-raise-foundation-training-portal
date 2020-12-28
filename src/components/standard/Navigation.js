@@ -3,20 +3,13 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import AccountIcon from "./icons/AccountIcon";
-import MainLogo from "../../assets/raise_logo_background.png";
+import MainLogo from "../../assets/raise_logo_background_white.png";
 
 
 const Styles = styled.div`
   .navdiv {
     background: rgb(1,131,225);
     background: linear-gradient(90deg, rgba(1,131,225,1) 0%, rgba(90,184,253,1) 100%);
-  }
-  .logo {
-    font-family: "Montserrat", sans-serif;
-    font-weight: 900;
-    font-size: 1.2rem;
-    color: #f1f1f1;
-
   }
 
   .logo:hover {
