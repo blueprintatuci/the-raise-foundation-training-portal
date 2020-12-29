@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { makeStyles } from '@material-ui/core/styles';
 import { Container, Form, Button, Col } from "react-bootstrap";
-import userPool from "./poolData";
-import { Link, Redirect } from "react-router-dom";
-import { CognitoUser, CognitoUserAttribute } from "amazon-cognito-identity-js";
 import MainLogo from "../../assets/raise_logo_background.png";
+import Pinwheel from "../../assets/pinwheel.png";
 import Stepper from "../standard/Stepper"
 
 const Styles = styled.div`
@@ -33,6 +30,11 @@ const Styles = styled.div`
         cursor: pointer;
     }
 
+    .pinwheel{
+        display: flex;
+        justify-content: center
+    }
+
     .form-title{
         text-align: center;
         font-weight: 900;
@@ -55,6 +57,7 @@ const Styles = styled.div`
         border: none;
         height: 50px;
         font-size: 1.3rem;
+        font-weight: 600;
     }
 
     .back-button{
@@ -64,33 +67,7 @@ const Styles = styled.div`
         border: none;
         height: 50px;
         font-size: 1.3rem;
-    }
-    .authenticate {
-        margin-top: 1rem;
-    }
-
-    .resend-button {
-        padding-top: 5px;
-        color: grey;
-        text-align: center;
-    }
-
-    .resend-button:hover {
-        color: #222222;
-    }
-
-    .reauth-message {
-        text-align: center;
-    }
-
-    .reauth-buttons {
-        display: flex;
-        justify-content: center;
-    }
-
-    .reauth-button {
-        margin: 5px;
-        border-radius: 0;
+        font-weight: 600;
     }
 `;
 
@@ -103,7 +80,6 @@ const Register = () => {
 
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [username, setUsername] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
@@ -111,7 +87,6 @@ const Register = () => {
 
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
-    const [country, setCountry] = useState("");
 
     const [degreeLevel, setDegreeLevel] = useState("");
     const [degreeFocus, setDegreeFocus] = useState("");
@@ -120,14 +95,9 @@ const Register = () => {
     const [license, setLicense] = useState("");
 
 
+    const [submitted, setSubmitted] = useState(false);
 
 
-
-
-    const [reAuth, setReAuth] = useState(false);
-    const [registered, setRegistered] = useState(false);
-    const [verified, setVerified] = useState(false);
-    const [verificationCode, setVerificationCode] = useState("");
 
     const nextStep = () =>{
         let next_step = currentStep + 1
@@ -139,136 +109,37 @@ const Register = () => {
         setCurrentStep(prev_step)
     }
 
-
-    let attributeList = [];
-    const userData = {
-        Username: username,
-        Pool: userPool,
-    };
-
-    let dataEmail = {
-        Name: "email",
-        Value: email,
-    };
-
-
-    let attributeEmail = new CognitoUserAttribute(dataEmail);
-
-    attributeList.push(attributeEmail);
-    const cognitoUser = new CognitoUser(userData);
-
-    const onResend = (event) => {
-        event.preventDefault();
-        cognitoUser.resendConfirmationCode(function (err, result) {
-            if (err) {
-                alert(err.message || JSON.stringify(err));
-                return;
-            }
-            console.log("call result: " + result);
-        });
-    };
-
-    const onVerify = (event) => {
-        event.preventDefault();
-
-        cognitoUser.confirmRegistration(verificationCode, true, function (
-            err,
-            result
-        ) {
-            if (err) {
-                // alert(err.message || JSON.stringify(err));
-                console.error(err);
-                return;
-            }
-
-            console.log("call result: " + result);
-            setVerified(true);
-        });
-    };
-
-    const onSubmit = (event) => {
-        event.preventDefault();
-        userPool.signUp(username, password, attributeList, null, (err, data) => {
-            if (err) {
-                console.error(err);
-                if (err.name === "UsernameExistsException") {
-                    setReAuth(true);
-                }
-            } else {
-                console.log("success");
-                setRegistered(true);
-            }
-        });
-    };
-
-    if (verified) {
-        return <Redirect to="/login"></Redirect>;
+    const handleSubmit = () => {
+        setSubmitted(true)
     }
 
-    if (reAuth) {
+    if (submitted){
         return (
             <Styles>
                 <Container style={{ justifyContent: "center", display: "flex" }}>
-                    <div className="form-wrapper">
-                        <div className="reauth-message">
-                            This email already exists. Please login or verify your account.
-                        </div>
-                        <div className="reauth-buttons">
-                            <Link to="/login">
-                                <Button className="reauth-button" variant="dark">
-                                    Login
+
+                    <div className="form-wrapper" style={{paddingBottom: 0}}>
+                        <Form>
+                            <span className="logo"><img alt="" src={MainLogo} height="80px" ></img></span>
+
+                            <div className="form-title" style={{paddingTop: '100px'}}>You're Set!</div>
+
+                        
+                            <Form.Row>
+                                <Button 
+                                    className="next-button" 
+                                    block>
+                                        Go To Dashboard
                                 </Button>
-                            </Link>
-                            <Link to="/authenticate">
-                                <Button className="reauth-button" variant="dark">
-                                    Verify
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
-                </Container>
-            </Styles>
-        );
-    }
+                            </Form.Row>
 
-    if (registered) {
-        return (
-            <Styles>
-                <Container style={{ justifyContent: "center", display: "flex" }}>
-                    <div className="form-wrapper">
-                        <Form onSubmit={onVerify}>
-                            <Form.Group>
-                                <Form.Control
-                                    value={verificationCode}
-                                    onChange={(event) => setVerificationCode(event.target.value)}
-                                    placeholder="Verification Code"
-                                />
-                            </Form.Group>
-
-                            <Button
-                                className="signup-button"
-                                variant="dark"
-                                type="submit"
-                                block
-                            >
-                                Verify
-                            </Button>
-
-                            <div
-                                onClick={onResend}
-                                className="resend-button"
-                                variant="dark"
-                                type="submit"
-                            >
-                                Resend Code
-                            </div>
+                            <span className="pinwheel"><img alt="" src={Pinwheel} height="200px"></img></span>
                         </Form>
                     </div>
                 </Container>
             </Styles>
-        );
+        )
     }
-
     return (
         <Styles>
             <div>
@@ -277,7 +148,7 @@ const Register = () => {
                         {
                             currentStep === 1 && 
                             <Form>
-                                <span className="logo"><img src={MainLogo} height="80px" ></img></span>
+                                <span className="logo"><img alt="" src={MainLogo} height="80px" ></img></span>
 
                                 <div className="form-title">Sign Up</div>
                                 <Form.Group>
@@ -353,7 +224,7 @@ const Register = () => {
                         {
                             currentStep === 2 &&
                             <Form>
-                                <span className="logo"><img src={MainLogo} height="80px" ></img></span>
+                                <span className="logo"><img alt="" src={MainLogo} height="80px" ></img></span>
 
                                 <div className="form-title">Sign Up</div>
                                 <Form.Group>
@@ -366,22 +237,69 @@ const Register = () => {
 
                                 <Form.Group>
                                     <Form.Control
+                                        style={{padding: 10}}
                                         value={state}
+                                        as="select"
                                         onChange={(event) => setState(event.target.value)}
-                                        placeholder="State"
-                                    />
+                                    >
+                                        <option value="">State</option>
+                                        <option value="AK">Alaska</option>
+                                        <option value="AL">Alabama</option>
+                                        <option value="AR">Arkansas</option>
+                                        <option value="AZ">Arizona</option>
+                                        <option value="CA">California</option>
+                                        <option value="CO">Colorado</option>
+                                        <option value="CT">Connecticut</option>
+                                        <option value="DC">District of Columbia</option>
+                                        <option value="DE">Delaware</option>
+                                        <option value="FL">Florida</option>
+                                        <option value="GA">Georgia</option>
+                                        <option value="HI">Hawaii</option>
+                                        <option value="IA">Iowa</option>
+                                        <option value="ID">Idaho</option>
+                                        <option value="IL">Illinois</option>
+                                        <option value="IN">Indiana</option>
+                                        <option value="KS">Kansas</option>
+                                        <option value="KY">Kentucky</option>
+                                        <option value="LA">Louisiana</option>
+                                        <option value="MA">Massachusetts</option>
+                                        <option value="MD">Maryland</option>
+                                        <option value="ME">Maine</option>
+                                        <option value="MI">Michigan</option>
+                                        <option value="MN">Minnesota</option>
+                                        <option value="MO">Missouri</option>
+                                        <option value="MS">Mississippi</option>
+                                        <option value="MT">Montana</option>
+                                        <option value="NC">North Carolina</option>
+                                        <option value="ND">North Dakota</option>
+                                        <option value="NE">Nebraska</option>
+                                        <option value="NH">New Hampshire</option>
+                                        <option value="NJ">New Jersey</option>
+                                        <option value="NM">New Mexico</option>
+                                        <option value="NV">Nevada</option>
+                                        <option value="NY">New York</option>
+                                        <option value="OH">Ohio</option>
+                                        <option value="OK">Oklahoma</option>
+                                        <option value="OR">Oregon</option>
+                                        <option value="PA">Pennsylvania</option>
+                                        <option value="PR">Puerto Rico</option>
+                                        <option value="RI">Rhode Island</option>
+                                        <option value="SC">South Carolina</option>
+                                        <option value="SD">South Dakota</option>
+                                        <option value="TN">Tennessee</option>
+                                        <option value="TX">Texas</option>
+                                        <option value="UT">Utah</option>
+                                        <option value="VA">Virginia</option>
+                                        <option value="VT">Vermont</option>
+                                        <option value="WA">Washington</option>
+                                        <option value="WI">Wisconsin</option>
+                                        <option value="WV">West Virginia</option>
+                                        <option value="WY">Wyoming</option>    
+                                    </Form.Control>
+                                    
                                     <Form.Text className="text-muted"></Form.Text>
                                 </Form.Group>
 
-                                
-                                <Form.Group>
-                                    <Form.Control
-                                        value={country}
-                                        onChange={(event) => setCountry(event.target.value)}
-                                        placeholder="Country"
-                                    />
-                                    <Form.Text className="text-muted"></Form.Text>
-                                </Form.Group>
                                 <Stepper steps={steps} activeStep={currentStep}/>
                                 <Form.Row>
                                     <Col>
@@ -406,11 +324,11 @@ const Register = () => {
                             </Form>
                         }
 
-{
+                        {
                             currentStep === 3 &&
                             <Form>
 
-                                <span className="logo"><img src={MainLogo} height="80px" ></img></span>
+                                <span className="logo"><img alt="" src={MainLogo} height="80px" ></img></span>
 
                                 <div className="form-title">Sign Up</div>
                                 <Form.Group>
@@ -474,10 +392,10 @@ const Register = () => {
                                     <Col>
                                         <Button
                                             className="next-button"
-                                            onClick={nextStep}
+                                            onClick={handleSubmit}
                                             block
                                         >
-                                            Next
+                                            Submit
                                         </Button>
                                     </Col>
                                 </Form.Row>

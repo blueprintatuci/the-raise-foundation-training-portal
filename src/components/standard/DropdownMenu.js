@@ -1,7 +1,6 @@
 import React, {  } from "react";
 import styled from "styled-components";
-import { Link, Redirect } from "react-router-dom";
-import AccountIcon from "./icons/AccountIcon";
+import { Link } from "react-router-dom";
 
 const Styles = styled.div`
   .dropdown {
@@ -84,7 +83,7 @@ const DropdownMenu = () => {
     <Styles>
       <div className="dropdown">
         <div className="menu">
-          <DropdownItem leftIcon={<AccountIcon />}>My Profile</DropdownItem>
+          <DropdownItem to="/signup">Sign Up</DropdownItem>
 
           <div
             style={{
@@ -93,7 +92,7 @@ const DropdownMenu = () => {
               marginTop: "5px",
             }}
           ></div>
-          <DropdownItem >Logout</DropdownItem>
+          <DropdownItem>Login</DropdownItem>
         </div>
       </div>
     </Styles>

@@ -78,7 +78,7 @@ const MainNavbar = () => {
   const Navbar = (props) => {
     return (
       <nav className="navbar">
-        <span className="logo"><img src={MainLogo} height="60px" ></img></span>
+        <span className="logo"><img alt="" src={MainLogo} height="60px" ></img></span>
         <span className="navbar-nav">
             <ul>{props.children}</ul>
         </span>
