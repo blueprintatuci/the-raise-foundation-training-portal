@@ -15,6 +15,11 @@ const Styles = styled.div`
         
     }
 
+    .form-container{
+        justify-content: center; 
+        display: flex 
+    }
+
     .form-wrapper {
         font-family: 'Raleway', sans-serif;
         background: white;
@@ -26,13 +31,35 @@ const Styles = styled.div`
         
     }
 
+    .form-success-wrapper{
+        font-family: 'Raleway', sans-serif;
+        background: white;
+        min-width: 350px;
+        padding: 2rem;
+        padding-bottom: 0;
+        margin-top: 3rem;
+        border-radius: 15px;
+        width: 450px;
+    }
+
+    .form-select{
+        padding: 10
+    }
+
+    .logo{
+        height: 80px
+    }
+
     .logo:hover {
         cursor: pointer;
     }
 
-    .pinwheel{
+    .pinwheel-wrapper{  
         display: flex;
-        justify-content: center
+        justify-content: center;
+    }
+    .pinwheel{
+        height: 200px
     }
 
     .form-title{
@@ -40,6 +67,14 @@ const Styles = styled.div`
         font-weight: 900;
         font-size: 2rem;
         padding: 15px
+    }
+
+    .form-success-title{
+        text-align: center;
+        font-weight: 900;
+        font-size: 2rem;
+        padding-top: 80px; 
+        padding-bottom: 10px
     }
 
     .stepper{
@@ -116,15 +151,11 @@ const Register = () => {
     if (submitted){
         return (
             <Styles>
-                <Container style={{ justifyContent: "center", display: "flex" }}>
-
-                    <div className="form-wrapper" style={{paddingBottom: 0}}>
+                <Container className="form-container">
+                    <div className="form-success-wrapper">
                         <Form>
-                            <span className="logo"><img alt="" src={MainLogo} height="80px" ></img></span>
-
-                            <div className="form-title" style={{paddingTop: '100px'}}>You're Set!</div>
-
-                        
+                            <img className="logo" alt="The Raise Foundation Logo" src={MainLogo}></img>
+                            <div className="form-success-title">You're Set!</div>
                             <Form.Row>
                                 <Button 
                                     className="next-button" 
@@ -132,8 +163,7 @@ const Register = () => {
                                         Go To Dashboard
                                 </Button>
                             </Form.Row>
-
-                            <span className="pinwheel"><img alt="" src={Pinwheel} height="200px"></img></span>
+                            <div className="pinwheel-wrapper"><img className="pinwheel" alt="Pinwheel" src={Pinwheel}></img></div>
                         </Form>
                     </div>
                 </Container>
@@ -143,12 +173,12 @@ const Register = () => {
     return (
         <Styles>
             <div>
-                <Container style={{ justifyContent: "center", display: "flex" }}>
+                <Container className="form-container">
                     <div className="form-wrapper">
                         {
                             currentStep === 1 && 
                             <Form>
-                                <span className="logo"><img alt="" src={MainLogo} height="80px" ></img></span>
+                                <img className="logo" alt="The Raise Foundation Logo" src={MainLogo}></img>
 
                                 <div className="form-title">Sign Up</div>
                                 <Form.Group>
@@ -224,7 +254,7 @@ const Register = () => {
                         {
                             currentStep === 2 &&
                             <Form>
-                                <span className="logo"><img alt="" src={MainLogo} height="80px" ></img></span>
+                                <img className="logo" alt="The Raise Foundation Logo" src={MainLogo}></img>
 
                                 <div className="form-title">Sign Up</div>
                                 <Form.Group>
@@ -237,7 +267,7 @@ const Register = () => {
 
                                 <Form.Group>
                                     <Form.Control
-                                        style={{padding: 10}}
+                                        className="form-select"
                                         value={state}
                                         as="select"
                                         onChange={(event) => setState(event.target.value)}
@@ -327,9 +357,7 @@ const Register = () => {
                         {
                             currentStep === 3 &&
                             <Form>
-
-                                <span className="logo"><img alt="" src={MainLogo} height="80px" ></img></span>
-
+                                <img className="logo" alt="The Raise Foundation Logo" src={MainLogo}></img>
                                 <div className="form-title">Sign Up</div>
                                 <Form.Group>
                                     <Form.Control
@@ -347,7 +375,6 @@ const Register = () => {
                                     />
                                     <Form.Text className="text-muted"></Form.Text>
                                 </Form.Group>
-
                                 
                                 <Form.Group>
                                     <Form.Control

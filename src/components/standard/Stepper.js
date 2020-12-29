@@ -17,13 +17,11 @@ const Stepper = (props) => {
         if (activeStep === index+1){
             return "#0183E1"
         }
-
         return "#f1f1f1"
     }
 
     return (
         <Styles>
-            
             {Array.from(Array(steps), (e, i) => {
                 return <FiberManualRecordIcon style={{fill: stepColor(i), fontSize: '1rem'}}/>
             })}
