@@ -4,6 +4,10 @@ import { Container, Form, Button, Col } from "react-bootstrap";
 import MainLogo from "../../assets/raise_logo_background.png";
 import Pinwheel from "../../assets/pinwheel.png";
 import Stepper from "../standard/Stepper"
+import userPool from "./poolData";
+import { CognitoUser, CognitoUserAttribute } from "amazon-cognito-identity-js";
+
+
 
 const Styles = styled.div`
 
@@ -132,7 +136,35 @@ const Register = () => {
 
     const [submitted, setSubmitted] = useState(false);
 
+    const userData = {
+        Username: email,
+        Pool: userPool,
+    };
 
+    let dataEmail = {
+        Name: "email",
+        Value: email,
+    };
+
+    let dataFirstName = {
+        Name: "custom:first_name",
+        Value: firstName,
+    };
+
+    let dataLastName = {
+        Name: "custom:last_name",
+        Value: lastName,
+    };
+
+    let attributeEmail = new CognitoUserAttribute(dataEmail);   
+    let attributeFirstName = new CognitoUserAttribute(dataFirstName);
+    let attributeLastName = new CognitoUserAttribute(dataLastName);
+
+    let attributeList = [];
+
+    attributeList.push(attributeEmail);
+    attributeList.push(attributeFirstName);
+    attributeList.push(attributeLastName);
 
     const nextStep = () =>{
         let next_step = currentStep + 1
@@ -144,9 +176,19 @@ const Register = () => {
         setCurrentStep(prev_step)
     }
 
-    const handleSubmit = () => {
-        setSubmitted(true)
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        userPool.signUp(email, password, attributeList, null, (err, data) => {
+        if (err) {
+            console.error(err);
+        } else {
+            nextStep();
+        }
+        });
     }
+
+    
+
 
     if (submitted){
         return (
@@ -241,7 +283,7 @@ const Register = () => {
                                     <Col>
                                         <Button
                                             className="next-button"
-                                            onClick={nextStep}
+                                            onClick={handleSubmit}
                                             block
                                         >
                                             Next
