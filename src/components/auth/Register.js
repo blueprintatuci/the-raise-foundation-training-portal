@@ -155,7 +155,7 @@ const Register = () => {
     const [currentStep, setCurrentStep] = useState(1);
 
 
-    const [email, setEmail] = useState("test@test.com");
+    const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
