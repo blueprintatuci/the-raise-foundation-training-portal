@@ -47,7 +47,7 @@ const Styles = styled.div`
     }
 
     .form-select{
-        padding: 10
+        padding: 8px
     }
 
     .logo{
@@ -64,6 +64,10 @@ const Styles = styled.div`
     }
     .pinwheel{
         height: 200px
+    }
+
+    .other-specification{
+        margin-left: 50px;
     }
 
     .form-title{
@@ -113,7 +117,7 @@ const Styles = styled.div`
   
 const Register = () => {
 
-    const steps = 3;
+    const steps = 4;
     const [currentStep, setCurrentStep] = useState(1);
 
 
@@ -133,6 +137,7 @@ const Register = () => {
     const [licenseType, setLicenseType] = useState("");
     const [license, setLicense] = useState("");
 
+    const [verificationCode, setVerficationCode] = useState("");
 
     const [submitted, setSubmitted] = useState(false);
 
@@ -156,15 +161,62 @@ const Register = () => {
         Value: lastName,
     };
 
+    let dataCity = {
+        Name: "custom:city",
+        Value: city,
+    };
+    let dataState = {
+        Name: "custom:state",
+        Value: state,
+    };
+    let dataDegreeLevel = {
+        Name: "custom:degree_level",
+        Value: degreeLevel,
+    };
+    let dataDegreeFocus = {
+        Name: "custom:degree_focus",
+        Value: degreeFocus,
+    };
+    let dataOccupation = {
+        Name: "custom:occupation",
+        Value: occupation,
+    };
+    let dataLicenseType = {
+        Name: "custom:license_type",
+        Value: licenseType,
+    };
+    let dataLicense = {
+        Name: "custom:license",
+        Value: license,
+    };
+    
+
     let attributeEmail = new CognitoUserAttribute(dataEmail);   
     let attributeFirstName = new CognitoUserAttribute(dataFirstName);
     let attributeLastName = new CognitoUserAttribute(dataLastName);
+    let attributeCity = new CognitoUserAttribute(dataCity);
+    let attributeState = new CognitoUserAttribute(dataState);
+    let attributeDegreeLevel = new CognitoUserAttribute(dataDegreeLevel);
+    let attributeDegreeFocus = new CognitoUserAttribute(dataDegreeFocus);
+    let attributeOccupation = new CognitoUserAttribute(dataOccupation);
+    let attributeLicenseType = new CognitoUserAttribute(dataLicenseType);
+    let attributeLicense = new CognitoUserAttribute(dataLicense);
 
     let attributeList = [];
 
     attributeList.push(attributeEmail);
     attributeList.push(attributeFirstName);
     attributeList.push(attributeLastName);
+    attributeList.push(attributeCity);
+    attributeList.push(attributeState);
+    attributeList.push(attributeDegreeLevel);
+    attributeList.push(attributeDegreeFocus);
+    attributeList.push(attributeOccupation);
+    attributeList.push(attributeLicenseType);
+    attributeList.push(attributeLicense);
+
+
+
 
     const nextStep = () =>{
         let next_step = currentStep + 1
@@ -283,7 +335,7 @@ const Register = () => {
                                     <Col>
                                         <Button
                                             className="next-button"
-                                            onClick={handleSubmit}
+                                            onClick={nextStep}
                                             block
                                         >
                                             Next
@@ -401,22 +453,68 @@ const Register = () => {
                             <Form>
                                 <img className="logo" alt="The Raise Foundation Logo" src={MainLogo}></img>
                                 <div className="form-title">Sign Up</div>
-                                <Form.Group>
-                                    <Form.Control
-                                        value={degreeLevel}
-                                        onChange={(event) => setDegreeLevel(event.target.value)}
-                                        placeholder="Level of Degree Attained"
-                                    />
-                                </Form.Group>
 
                                 <Form.Group>
                                     <Form.Control
-                                        value={degreeFocus}
-                                        onChange={(event) => setDegreeFocus(event.target.value)}
-                                        placeholder="Degree Area of Focus"
+                                        className="form-select"
+                                        value={degreeLevel}
+                                        as="select"
+                                        onChange={(event) => setDegreeLevel(event.target.value)}
+                                    >
+                                        <option value="">Level of Degree Attained</option>
+                                        <option value="associate">Associate Degree (A.A. or A.S.)</option>   
+                                        <option value="bachelor">Bachelor's Degree (B.A. or B.S.)</option>   
+                                        <option value="master">Master's Degree (M.A. or M.S.)</option>   
+                                        <option value="md">MD</option>   
+                                        <option value="jd">JD</option>   
+                                        <option value="phd">Ph.D.</option>   
+                                        <option value="other">Other</option> 
+
+
+                                    </Form.Control>
+                                    
+                                </Form.Group>
+
+                                {degreeLevel === "other" &&
+                                <Form.Group className="other-specification">
+                                    <Form.Control
+                                        onChange={(event) => setDegreeLevel(event.target.value)}
+                                        placeholder="Please specify"
                                     />
                                     <Form.Text className="text-muted"></Form.Text>
                                 </Form.Group>
+                                }
+
+                                <Form.Group>
+                                    <Form.Control
+                                        className="form-select"
+                                        value={degreeFocus}
+                                        as="select"
+                                        onChange={(event) => setDegreeFocus(event.target.value)}
+                                    >
+                                        <option value="">Degree Area of Focus</option>
+                                        <option value="medical_doctor">Medical Doctor</option>   
+                                        <option value="medical_nursing">Medical Nursing</option>   
+                                        <option value="psychology">Psychology</option>   
+                                        <option value="counseling">Counseling</option>   
+                                        <option value="social_work">Social Work</option>   
+                                        <option value="education">Education</option>   
+                                        <option value="other">Other</option> 
+
+
+                                    </Form.Control>
+                                    
+                                </Form.Group>
+
+                                {degreeFocus === "other" &&
+                                <Form.Group className="other-specification">
+                                    <Form.Control
+                                        onChange={(event) => setDegreeFocus(event.target.value)}
+                                        placeholder="Please specify"
+                                    />
+                                    <Form.Text className="text-muted"></Form.Text>
+                                </Form.Group>
+                                }
                                 
                                 <Form.Group>
                                     <Form.Control
@@ -434,9 +532,10 @@ const Register = () => {
                                         <Form.Control
                                             value={licenseType}
                                             onChange={(event) => setLicenseType(event.target.value)}
-                                            placeholder="License Type"
+                                            placeholder="License Type (optional)"
                                         />
                                         </Col>
+                                        { licenseType &&
                                         <Col>
                                         <Form.Control
                                             value={license}
@@ -444,6 +543,7 @@ const Register = () => {
                                             placeholder="License #"
                                         />
                                         </Col>
+                                        }
                                         <Form.Text className="text-muted"></Form.Text>
                                     </Form.Row>
                                 </Form.Group>
@@ -456,6 +556,45 @@ const Register = () => {
                                             block
                                         >
                                             Back
+                                        </Button>
+                                    </Col>
+                                    <Col>
+                                        <Button
+                                            className="next-button"
+                                            onClick={handleSubmit}
+                                            block
+                                        >
+                                            Submit
+                                        </Button>
+                                    </Col>
+                                </Form.Row>
+                            </Form>
+                        }
+
+{
+                            currentStep === 4 &&
+                            <Form>
+                                <img className="logo" alt="The Raise Foundation Logo" src={MainLogo}></img>
+                                <div className="form-title">Sign Up</div>
+                                <Form.Group>
+                                    <Form.Control
+                                        value={verificationCode}
+                                        onChange={(event) => setVerficationCode(event.target.value)}
+                                        placeholder="Verification Code"
+                                    />
+                                </Form.Group>
+
+                                
+
+                                <Stepper steps={steps} activeStep={currentStep}/>
+                                <Form.Row>
+                                    <Col>
+                                        <Button
+                                            className="back-button"
+                                            onClick={previousStep}
+                                            block
+                                        >
+                                            Resend
                                         </Button>
                                     </Col>
                                     <Col>
