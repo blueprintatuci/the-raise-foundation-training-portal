@@ -85,6 +85,19 @@ const Styles = styled.div`
         padding-bottom: 10px
     }
 
+    .form-description{
+        text-align:center;
+        font-weight: 500;
+        font-size: 1.3rem;
+        padding-bottom: 20px
+    }
+
+    .form-input-description{
+        font-size: .95rem;
+        text-align: center;
+        padding-bottom: 10px;
+    }
+
     .stepper{
         height: 50px;
         maxWidth: 400;
@@ -112,6 +125,27 @@ const Styles = styled.div`
         font-size: 1.3rem;
         font-weight: 600;
     }
+
+    .resend-description{
+        font-style: italic;
+        text-align: center;
+        padding-top: 20px; 
+        padding-bottom: 10px;
+        font-size: 1.1rem;
+
+    }
+
+    .resend-code{
+        text-align: center;
+        padding-top: 5px;
+        color: rgb(1,131,225);
+        font-size: .98rem;
+    }
+
+    .resend-code:hover {
+        color: #222222;
+        cursor: pointer;
+      }
 `;
 
   
@@ -121,7 +155,7 @@ const Register = () => {
     const [currentStep, setCurrentStep] = useState(1);
 
 
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("test@test.com");
     const [phone, setPhone] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -138,8 +172,8 @@ const Register = () => {
     const [license, setLicense] = useState("");
 
     const [verificationCode, setVerficationCode] = useState("");
+    const [verified , setVerified] = useState("");
 
-    const [submitted, setSubmitted] = useState(false);
 
     const userData = {
         Username: email,
@@ -216,6 +250,7 @@ const Register = () => {
     attributeList.push(attributeLicense);
 
 
+    const cognitoUser = new CognitoUser(userData);
 
 
     const nextStep = () =>{
@@ -228,6 +263,35 @@ const Register = () => {
         setCurrentStep(prev_step)
     }
 
+    const onVerify = (event) => {
+        event.preventDefault();
+
+        cognitoUser.confirmRegistration(verificationCode, true, function (
+            err,
+            result
+        ) {
+            if (err) {
+            alert(err.message || JSON.stringify(err));
+            console.error(err);
+            return;
+            }
+
+            console.log("call result: " + result);
+            setVerified(true);
+        });
+    };
+
+    const onResend = (event) => {
+        event.preventDefault();
+        cognitoUser.resendConfirmationCode(function (err, result) {
+          if (err) {
+            alert(err.message || JSON.stringify(err));
+            return;
+          }
+          console.log("call result: " + result);
+        });
+      };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         userPool.signUp(email, password, attributeList, null, (err, data) => {
@@ -235,14 +299,11 @@ const Register = () => {
             console.error(err);
         } else {
             nextStep();
-        }
+            }
         });
     }
 
-    
-
-
-    if (submitted){
+    if (verified){
         return (
             <Styles>
                 <Container className="form-container">
@@ -254,7 +315,7 @@ const Register = () => {
                                 <Button 
                                     className="next-button" 
                                     block>
-                                        Go To Dashboard
+                                        Go To Login
                                 </Button>
                             </Form.Row>
                             <div className="pinwheel-wrapper"><img className="pinwheel" alt="Pinwheel" src={Pinwheel}></img></div>
@@ -469,10 +530,7 @@ const Register = () => {
                                         <option value="jd">JD</option>   
                                         <option value="phd">Ph.D.</option>   
                                         <option value="other">Other</option> 
-
-
-                                    </Form.Control>
-                                    
+                                    </Form.Control>     
                                 </Form.Group>
 
                                 {degreeLevel === "other" &&
@@ -500,10 +558,7 @@ const Register = () => {
                                         <option value="social_work">Social Work</option>   
                                         <option value="education">Education</option>   
                                         <option value="other">Other</option> 
-
-
                                     </Form.Control>
-                                    
                                 </Form.Group>
 
                                 {degreeFocus === "other" &&
@@ -524,7 +579,6 @@ const Register = () => {
                                     />
                                     <Form.Text className="text-muted"></Form.Text>
                                 </Form.Group>
-
 
                                 <Form.Group>
                                     <Form.Row>
@@ -567,7 +621,9 @@ const Register = () => {
                                             Submit
                                         </Button>
                                     </Col>
+            
                                 </Form.Row>
+                                
                             </Form>
                         }
 
@@ -575,38 +631,39 @@ const Register = () => {
                             currentStep === 4 &&
                             <Form>
                                 <img className="logo" alt="The Raise Foundation Logo" src={MainLogo}></img>
-                                <div className="form-title">Sign Up</div>
+                                <div className="form-title">Verification</div>
+                                <div className="form-description">Please enter the code sent to {email}.</div>
                                 <Form.Group>
                                     <Form.Control
                                         value={verificationCode}
                                         onChange={(event) => setVerficationCode(event.target.value)}
                                         placeholder="Verification Code"
                                     />
+                                    <div className="form-input-description">Code may take up to 10 minutes to arrive.</div>
                                 </Form.Group>
-
-                                
-
                                 <Stepper steps={steps} activeStep={currentStep}/>
-                                <Form.Row>
-                                    <Col>
-                                        <Button
-                                            className="back-button"
-                                            onClick={previousStep}
-                                            block
-                                        >
-                                            Resend
-                                        </Button>
-                                    </Col>
+                                <Form.Row>                                
                                     <Col>
                                         <Button
                                             className="next-button"
-                                            onClick={handleSubmit}
+                                            onClick={onVerify}
                                             block
                                         >
                                             Submit
                                         </Button>
                                     </Col>
                                 </Form.Row>
+                                <div
+                                    className="resend-description"
+                                >
+                                    Didn't receive a code?
+                                </div>
+                                <div
+                                    onClick={onResend}
+                                    className="resend-code"
+                                >
+                                    Resend Code
+                                </div>
                             </Form>
                         }
                     </div>
