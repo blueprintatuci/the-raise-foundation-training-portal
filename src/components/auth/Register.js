@@ -101,20 +101,6 @@ const Styles = styled.div`
 		color: blue;
 	}
 
-	.next-button {
-		background: rgb(1, 131, 225);
-		background: linear-gradient(
-			90deg,
-			rgba(1, 131, 225, 1) 0%,
-			rgba(90, 184, 253, 1) 100%
-		);
-		border-radius: 12px;
-		border: none;
-		height: 50px;
-		font-size: 1.3rem;
-		font-weight: 600;
-	}
-
 	.back-button {
 		color: black;
 		background: #e3e3e3;
@@ -166,7 +152,7 @@ const Register = () => {
 	const [license, setLicense] = useState("");
 
 	const [verificationCode, setVerficationCode] = useState("");
-	const [verified, setVerified] = useState("");
+	const [verified, setVerified] = useState(false);
 
 	const userData = {
 		Username: email,
@@ -309,9 +295,7 @@ const Register = () => {
 								You're Set!
 							</div>
 							<Form.Row>
-								<Button className="next-button" block>
-									Go To Login
-								</Button>
+								<GradientButton text="Go to Login" />
 							</Form.Row>
 							<div className="pinwheel-wrapper">
 								<img

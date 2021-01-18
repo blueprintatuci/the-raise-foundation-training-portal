@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Button } from "react-bootstrap";
 
 const Styles = styled.div`
+	width: 100%;
 	.gradient-button {
 		background: rgb(1, 131, 225);
 		background: linear-gradient(
@@ -24,7 +25,7 @@ const GradientButton = (props) => {
 
 	return (
 		<Styles>
-			<Button className="gradient-button" onClick={handleSubmit} block>
+			<Button block className="gradient-button" onClick={handleSubmit}>
 				{text}
 			</Button>
 		</Styles>
