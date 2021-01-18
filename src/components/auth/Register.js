@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Stepper from "@/components/standard/Stepper";
+import Stepper from "../standard/Stepper";
 import userPool from "./poolData";
-import { CognitoUserAttribute } from "amazon-cognito-identity-js";
+import { CognitoUser, CognitoUserAttribute } from "amazon-cognito-identity-js";
 import { Container, Form, Button, Col } from "react-bootstrap";
 import MainLogo from "../../assets/raise_logo_background.png";
 import Pinwheel from "../../assets/pinwheel.png";
-import GradientButton from "@/components/standard/GradientButton";
+import GradientButton from "../standard/GradientButton";
 
 const Styles = styled.div`
 	.form-control {
@@ -81,6 +81,19 @@ const Styles = styled.div`
 		padding-bottom: 10px;
 	}
 
+	.form-description {
+		text-align: center;
+		font-weight: 500;
+		font-size: 1.3rem;
+		padding-bottom: 20px;
+	}
+
+	.form-input-description {
+		font-size: 0.95rem;
+		text-align: center;
+		padding-bottom: 10px;
+	}
+
 	.stepper {
 		height: 50px;
 		maxwidth: 400;
@@ -111,6 +124,26 @@ const Styles = styled.div`
 		font-size: 1.3rem;
 		font-weight: 600;
 	}
+
+	.resend-description {
+		font-style: italic;
+		text-align: center;
+		padding-top: 20px;
+		padding-bottom: 10px;
+		font-size: 1.1rem;
+	}
+
+	.resend-code {
+		text-align: center;
+		padding-top: 5px;
+		color: rgb(1, 131, 225);
+		font-size: 0.98rem;
+	}
+
+	.resend-code:hover {
+		color: #222222;
+		cursor: pointer;
+	}
 `;
 
 const Register = () => {
@@ -133,8 +166,7 @@ const Register = () => {
 	const [license, setLicense] = useState("");
 
 	const [verificationCode, setVerficationCode] = useState("");
-
-	const [submitted, setSubmitted] = useState(false);
+	const [verified, setVerified] = useState("");
 
 	const userData = {
 		Username: email,
@@ -209,6 +241,8 @@ const Register = () => {
 	attributeList.push(attributeLicenseType);
 	attributeList.push(attributeLicense);
 
+	const cognitoUser = new CognitoUser(userData);
+
 	const nextStep = () => {
 		let next_step = currentStep + 1;
 		setCurrentStep(next_step);
@@ -217,6 +251,36 @@ const Register = () => {
 	const previousStep = () => {
 		let prev_step = currentStep - 1;
 		setCurrentStep(prev_step);
+	};
+
+	const onVerify = (event) => {
+		event.preventDefault();
+
+		cognitoUser.confirmRegistration(
+			verificationCode,
+			true,
+			function (err, result) {
+				if (err) {
+					alert(err.message || JSON.stringify(err));
+					console.error(err);
+					return;
+				}
+
+				console.log("call result: " + result);
+				setVerified(true);
+			}
+		);
+	};
+
+	const onResend = (event) => {
+		event.preventDefault();
+		cognitoUser.resendConfirmationCode(function (err, result) {
+			if (err) {
+				alert(err.message || JSON.stringify(err));
+				return;
+			}
+			console.log("call result: " + result);
+		});
 	};
 
 	const handleSubmit = (event) => {
@@ -230,7 +294,7 @@ const Register = () => {
 		});
 	};
 
-	if (submitted) {
+	if (verified) {
 		return (
 			<Styles>
 				<Container className="form-container">
@@ -246,7 +310,7 @@ const Register = () => {
 							</div>
 							<Form.Row>
 								<Button className="next-button" block>
-									Go To Dashboard
+									Go To Login
 								</Button>
 							</Form.Row>
 							<div className="pinwheel-wrapper">
@@ -347,13 +411,10 @@ const Register = () => {
 										</Button>
 									</Col>
 									<Col>
-										<Button
-											className="next-button"
+										<GradientButton
+											text="Next"
 											onClick={nextStep}
-											block
-										>
-											Next
-										</Button>
+										/>
 									</Col>
 								</Form.Row>
 							</Form>
@@ -472,13 +533,10 @@ const Register = () => {
 										</Button>
 									</Col>
 									<Col>
-										<Button
-											className="next-button"
+										<GradientButton
+											text="Next"
 											onClick={nextStep}
-											block
-										>
-											Next
-										</Button>
+										/>
 									</Col>
 								</Form.Row>
 							</Form>
@@ -638,13 +696,10 @@ const Register = () => {
 										</Button>
 									</Col>
 									<Col>
-										<Button
-											className="next-button"
+										<GradientButton
+											text="Submit"
 											onClick={handleSubmit}
-											block
-										>
-											Submit
-										</Button>
+										/>
 									</Col>
 								</Form.Row>
 							</Form>
@@ -657,7 +712,10 @@ const Register = () => {
 									alt="The Raise Foundation Logo"
 									src={MainLogo}
 								></img>
-								<div className="form-title">Sign Up</div>
+								<div className="form-title">Verification</div>
+								<div className="form-description">
+									Please enter the code sent to {email}.
+								</div>
 								<Form.Group>
 									<Form.Control
 										value={verificationCode}
@@ -668,32 +726,29 @@ const Register = () => {
 										}
 										placeholder="Verification Code"
 									/>
+									<div className="form-input-description">
+										Code may take up to 10 minutes to
+										arrive.
+									</div>
 								</Form.Group>
-
 								<Stepper
 									steps={steps}
 									activeStep={currentStep}
 								/>
 								<Form.Row>
 									<Col>
-										<Button
-											className="back-button"
-											onClick={previousStep}
-											block
-										>
-											Resend
-										</Button>
-									</Col>
-									<Col>
-										<Button
-											className="next-button"
-											onClick={handleSubmit}
-											block
-										>
-											Submit
-										</Button>
+										<GradientButton
+											text="Submit"
+											onClick={onVerify}
+										/>
 									</Col>
 								</Form.Row>
+								<div className="resend-description">
+									Didn't receive a code?
+								</div>
+								<div onClick={onResend} className="resend-code">
+									Resend Code
+								</div>
 							</Form>
 						)}
 					</div>
