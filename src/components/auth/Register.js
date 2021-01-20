@@ -280,6 +280,11 @@ const Register = () => {
         });
     };
 
+    const handleHistoryBack = (event) => {
+        event.preventDefault();
+        window.history.back();
+    };
+
     if (verified) {
         return (
             <Styles>
@@ -390,7 +395,11 @@ const Register = () => {
                                 />
                                 <Form.Row>
                                     <Col>
-                                        <Button className="back-button" block>
+                                        <Button
+                                            className="back-button"
+                                            block
+                                            onClick={handleHistoryBack}
+                                        >
                                             Back
                                         </Button>
                                     </Col>
