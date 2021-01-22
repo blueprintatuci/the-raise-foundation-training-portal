@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import userPool from "./poolData";
-import { CognitoUser, CognitoUserAttribute } from "amazon-cognito-identity-js";
-import { Container, Form, Button, Col } from "react-bootstrap";
+import { AccountContext } from "./Accounts";
+import { Container, Form } from "react-bootstrap";
 import MainLogo from "../../assets/raise_logo_background.png";
 import GradientButton from "../standard/GradientButton";
+import { Redirect } from "react-router-dom";
 
 const Styles = styled.div`
     .form-control {
@@ -62,6 +62,20 @@ const Styles = styled.div`
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
+    const { authenticate } = useContext(AccountContext);
+
+    const onSubmit = (event) => {
+        event.preventDefault();
+        authenticate(email, password)
+            .then((data) => {
+                setLoggedIn(true);
+            })
+            .catch((err) => {});
+    };
+    if (loggedIn) {
+        return <Redirect to="/"></Redirect>;
+    }
 
     return (
         <Styles>
@@ -99,7 +113,7 @@ const Login = () => {
                                 />
                             </Form.Group>
 
-                            <GradientButton text="Login" />
+                            <GradientButton text="Login" onClick={onSubmit} />
                             <div className="actions">
                                 <a href="/">Continue as Guest</a>
                                 <a href="/signup">Sign Up</a>

@@ -202,6 +202,10 @@ const Register = () => {
         Name: "custom:license",
         Value: license,
     };
+    let dataPhone = {
+        Name: "custom:phone_number",
+        Value: phone,
+    };
 
     let attributeEmail = new CognitoUserAttribute(dataEmail);
     let attributeFirstName = new CognitoUserAttribute(dataFirstName);
@@ -213,6 +217,7 @@ const Register = () => {
     let attributeOccupation = new CognitoUserAttribute(dataOccupation);
     let attributeLicenseType = new CognitoUserAttribute(dataLicenseType);
     let attributeLicense = new CognitoUserAttribute(dataLicense);
+    let attributePhone = new CognitoUserAttribute(dataPhone);
 
     let attributeList = [];
 
@@ -226,6 +231,7 @@ const Register = () => {
     attributeList.push(attributeOccupation);
     attributeList.push(attributeLicenseType);
     attributeList.push(attributeLicense);
+    attributeList.push(attributePhone);
 
     const cognitoUser = new CognitoUser(userData);
 
