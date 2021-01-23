@@ -4,8 +4,8 @@ import Stepper from "../standard/Stepper";
 import userPool from "./poolData";
 import { CognitoUser, CognitoUserAttribute } from "amazon-cognito-identity-js";
 import { Container, Form, Button, Col } from "react-bootstrap";
-import MainLogo from "../../assets/raise_logo_background.png";
-import Pinwheel from "../../assets/pinwheel.png";
+import MainLogo from "../../assets/logos/raise_logo_background.png";
+import Pinwheel from "../../assets/illustrations/pinwheel.png";
 import GradientButton from "../standard/GradientButton";
 
 const Styles = styled.div`
