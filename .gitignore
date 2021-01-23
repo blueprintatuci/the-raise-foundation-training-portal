@@ -19,6 +19,7 @@
 .env.production.local
 .eslintcache
 
+/src/components/auth/poolData.js
 
 npm-debug.log*
 yarn-debug.log*
