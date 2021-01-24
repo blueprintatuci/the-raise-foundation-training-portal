@@ -13,11 +13,14 @@ const Styles = styled.div`
     display: flex;
     justify-content: space-between;
 
+    font-family: 'Raleway', sans-serif;
     font-size: large;
     color: white;
     
     div {
         padding: 50px;
+        flex-grow: 1;
+        flex-basis: 0;
     }
 
     p {
@@ -36,9 +39,12 @@ const Styles = styled.div`
         text-transform: uppercase;
         text-decoration: none;
 
+        a {
+            width: 50%
+        }
         div {
             background-color: rgb(0, 0, 0, 0.5);
-            width: 80%;
+            width: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -53,10 +59,11 @@ const Styles = styled.div`
 
     .links-social {
         display: flex;
+        justify-content: center;
         padding: 0;
 
         img {
-            margin: 10px 5px;
+            margin: 10px;
             width: 40px;
             height: 40px;
         }
