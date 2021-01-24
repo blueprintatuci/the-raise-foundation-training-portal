@@ -1,3 +1,5 @@
+import { useHistory } from "react-router-dom";
+
 import CreatorProfile from "../components/homepage/CreatorProfile";
 import GradientButton from "../components/standard/GradientButton";
 
@@ -26,15 +28,21 @@ const Styles = styled.div`
 
   h1 {
     font-size: 4.5rem;
+    font-weight: 600;
   }
 
   h2 {
     font-weight: 600;
   }
 
+  h3 {
+    font-weight: 600;
+  }
+
   .ace-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 50px;
   }
 
@@ -58,6 +66,10 @@ const Styles = styled.div`
   .content {
     text-align: center;
     width: 100%;
+
+    b {
+      font-weight: 500;
+    }
   }
 
   .content-creators {
@@ -91,7 +103,8 @@ const Styles = styled.div`
 
   .about-header-title {
     padding: 0 50px;
-    
+    font-weight: 600;
+
     a {
       text-transform: uppercase;
     }
@@ -107,6 +120,10 @@ const Styles = styled.div`
   .about-body {
     padding-right: 50px;
     font-size: 1.25rem;
+
+    b {
+      font-weight: 600;
+    }
   }
 
   .logos {
@@ -120,7 +137,7 @@ const Styles = styled.div`
       flex-basis: 0;
 
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
 
       img {
@@ -132,6 +149,8 @@ const Styles = styled.div`
 `;
 
 const HomePage = () => {
+  const history = useHistory();
+
   return (
     <Styles>
       <div className="ace-header">
@@ -141,7 +160,7 @@ const HomePage = () => {
             Adverse Childhood Experiences (ACEs) are a public health crisis. The Raise Foundation is here to provide you with essential training on this topic at your pace.                    
           </p>
           <div className="ace-header-button-container">
-            <GradientButton text="Get Started" />
+            <GradientButton text="Get Started" onClick={()=>history.push("/signup")}/>
           </div>
         </div>
         <img className="ace-header-img" src={beachPicture} />

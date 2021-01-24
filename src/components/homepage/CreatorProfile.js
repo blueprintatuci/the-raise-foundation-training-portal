@@ -10,6 +10,7 @@ const Styles = styled.div`
     width: 120px;
     height: 120px;
     border-radius: 50%;
+    margin-bottom: 15px;
   }
 
   p {
