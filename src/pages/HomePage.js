@@ -241,7 +241,7 @@ const HomePage = () => {
             <GradientButton text="Get Started" onClick={()=>history.push("/signup")}/>
           </div>
         </div>
-        <img className="ace-header-img" src={beachPicture} />
+        <img className="ace-header-img" src={beachPicture} alt="Family at the beach"/>
       </div>
       
       <div className="content">
@@ -257,11 +257,11 @@ const HomePage = () => {
 
       <div className="signup-prompt">
         <h3><a href="/signup">Sign Up or Log In</a> to Access Training Content Now!</h3>
-        <i>Or, continue as a <a href="#">guest</a></i>
+        <i>Or, continue as a <a href="/signup">guest</a></i>
       </div>
 
       <div className="picture-divider">
-        <img src={studyingPicture} />
+        <img src={studyingPicture} alt="Person studying on a bed"/>
       </div>
 
       <div className="about">
@@ -270,7 +270,7 @@ const HomePage = () => {
             <a href="/about">About the Training Portal</a>
             <h2>Accessible Training for Communities is Our Mission</h2>
           </div>
-          <img className="about-pinwheel-img" src={pinwheelPicture} />
+          <img className="about-pinwheel-img" src={pinwheelPicture} alt="Pinwheel illustration"/>
         </div>
         <div className="about-body">
           <p>
@@ -293,13 +293,13 @@ const HomePage = () => {
 
       <div className="logos">
         <a href="https://www.thechicagoschool.edu/">
-          <img src={chicagoSchoolLogo} />
+          <img src={chicagoSchoolLogo} alt="The Chicago School logo"/>
         </a>
         <a className="logos-raise"href="http://theraisefoundation.org/">
-          <img src={raiseLogoBlue} />
+          <img src={raiseLogoBlue} alt="The Raise Foundation logo"/>
         </a>
         <a href="https://www.acesaware.org/">
-          <img src={acesLogo} />
+          <img src={acesLogo} alt="Aces Aware logo"/>
         </a>
       </div>
     </Styles>

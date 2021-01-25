@@ -109,9 +109,9 @@ const Footer = () => {
                     </div>
                 </a>
                 <div className="links-social">
-                    <a href="https://www.facebook.com/TheRaiseFoundation/"><img src={facebook} /></a>
-                    <a href="https://www.linkedin.com/company/the-raise-foundation"><img src={linkedin} /></a>
-                    <a href="https://twitter.com/raisefoundation"><img src={twitter} /></a>
+                    <a href="https://www.facebook.com/TheRaiseFoundation/"><img src={facebook} alt="Facebook logo"/></a>
+                    <a href="https://www.linkedin.com/company/the-raise-foundation"><img src={linkedin} alt="LinkedIn logo"/></a>
+                    <a href="https://twitter.com/raisefoundation"><img src={twitter} alt="Twitter logo"/></a>
                 </div>
             </div>
         </Styles>

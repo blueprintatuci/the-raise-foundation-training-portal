@@ -21,7 +21,7 @@ const Styles = styled.div`
 const CreatorProfile = ({imgSrc, name, title}) => {
   return (
         <Styles>
-            <img src={imgSrc} />
+            <img src={imgSrc} alt={"Picture of " + name} />
             <p><b>{name}</b></p>
             <p><i>{title}</i></p>
         </Styles>
