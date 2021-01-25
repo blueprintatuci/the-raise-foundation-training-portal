@@ -68,6 +68,23 @@ const Styles = styled.div`
             height: 40px;
         }
     }
+
+    @media only screen and (max-width: 800px) {
+        flex-direction: column;
+        
+        div {
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .address {
+            text-align: center;
+        }
+
+        .links-social {
+            margin: 5px 0;
+        }
+    }
 `;
 
 const Footer = () => {
