@@ -110,7 +110,7 @@ const Styles = styled.div`
     }
   }
 
-  .about-header img {
+  .about-pinwheel-img {
     width: 100%;
     max-width: 350px;
     transform: rotate(45deg);
@@ -144,6 +144,84 @@ const Styles = styled.div`
         max-height: 100%;
         max-width: 100%;
       }
+    }
+  }
+
+  @media only screen and (max-width: 800px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    .ace-header {
+      margin: 50px 30px;
+    }
+
+    .ace-header-title {
+      width: 100%;
+      padding: 0px;
+      font-size: 0.9rem;
+
+      h1 {
+        margin-bottom: 20px;
+      }
+    }
+
+    .ace-header-button-container {
+      width: 200px;
+      margin-top: 25px;
+    }
+
+    .ace-header-img {
+      display: none;
+    }
+
+    .content-creators {
+      margin: 0px;
+      font-size: 0.9rem;
+    }
+
+    .signup-prompt {
+      margin: 50px 30px;
+    }
+
+    .picture-divider {
+      margin: 50px 30px;
+    }
+
+    .about-header-title{
+      padding: 0;
+      margin: 30px;
+    }
+
+    .about {
+      flex-direction: column;
+    }
+
+    .about-pinwheel-img {
+      display: none;
+    }
+
+    .about-body {
+      padding: 0px;
+      margin: 0 30px;
+      font-size: 1rem;
+    }
+
+    .logos {
+      flex-direction: column;
+      margin: 30px;
+
+      a {
+        margin: 20px 0;
+      }
+    }
+
+    .logos-raise {
+      order: -1;
     }
   }
 `;
@@ -192,7 +270,7 @@ const HomePage = () => {
             <a href="/about">About the Training Portal</a>
             <h2>Accessible Training for Communities is Our Mission</h2>
           </div>
-          <img src={pinwheelPicture} />
+          <img className="about-pinwheel-img" src={pinwheelPicture} />
         </div>
         <div className="about-body">
           <p>
@@ -217,7 +295,7 @@ const HomePage = () => {
         <a href="https://www.thechicagoschool.edu/">
           <img src={chicagoSchoolLogo} />
         </a>
-        <a href="http://theraisefoundation.org/">
+        <a className="logos-raise"href="http://theraisefoundation.org/">
           <img src={raiseLogoBlue} />
         </a>
         <a href="https://www.acesaware.org/">
