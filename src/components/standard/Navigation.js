@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import AccountIcon from "./icons/AccountIcon";
 import MainLogo from "../../assets/raise_logo_background_white.png";
-
+import { AccountContext } from "../auth/Accounts";
 
 const Styles = styled.div`
     .navdiv {
-        background: rgb(1,131,225);
-        background: linear-gradient(90deg, rgba(1,131,225,1) 0%, rgba(90,184,253,1) 100%);
+        background: rgb(1, 131, 225);
+        background: linear-gradient(
+            90deg,
+            rgba(1, 131, 225, 1) 0%,
+            rgba(90, 184, 253, 1) 100%
+        );
     }
 
     .logo:hover {
@@ -27,16 +31,14 @@ const Styles = styled.div`
         height: 80px;
         padding: 0 1rem;
         display: flex;
-        justify-content: space-between
+        justify-content: space-between;
     }
-
-
 
     .nav-item-container {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-left: 10px
+        padding-left: 10px;
     }
 
     .nav-item {
@@ -72,15 +74,29 @@ const Styles = styled.div`
 `;
 
 const MainNavbar = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { getSession } = useContext(AccountContext);
 
+    useEffect(() => {
+        getSession()
+            .then(() => {
+                setIsLoggedIn(true);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    });
     const Navbar = (props) => {
         return (
             <nav className="navbar">
-            <span className="logo"><img alt="" src={MainLogo} height="60px" ></img></span>
-            <span className="navbar-nav">
-                <ul>{props.children}</ul>
-            </span>
-            
+                <span className="logo">
+                    <Link to="/">
+                        <img alt="" src={MainLogo} height="60px"></img>
+                    </Link>
+                </span>
+                <span className="navbar-nav">
+                    <ul>{props.children}</ul>
+                </span>
             </nav>
         );
     };
@@ -90,16 +106,19 @@ const MainNavbar = () => {
         const to = props.to;
         const useOutsideAlerter = (ref) => {
             useEffect(() => {
-            function handleClickOutside(event) {
-                if (ref.current && !ref.current.contains(event.target)) {
-                setOpen(false);
+                function handleClickOutside(event) {
+                    if (ref.current && !ref.current.contains(event.target)) {
+                        setOpen(false);
+                    }
                 }
-            }
 
-            document.addEventListener("mousedown", handleClickOutside);
-            return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
+                document.addEventListener("mousedown", handleClickOutside);
+                return () => {
+                    document.removeEventListener(
+                        "mousedown",
+                        handleClickOutside
+                    );
+                };
             }, [ref]);
         };
         const dropdownRef = useRef(null);
@@ -107,29 +126,29 @@ const MainNavbar = () => {
 
         if (!to) {
             return (
-            <li className="nav-item" ref={dropdownRef}>
-                <a className="icon-button" onClick={() => setOpen(!open)}>
-                {props.icon}
-                </a>
-                {open && props.children}
-            </li>
+                <li className="nav-item" ref={dropdownRef}>
+                    <a className="icon-button" onClick={() => setOpen(!open)}>
+                        {props.icon}
+                    </a>
+                    {open && props.children}
+                </li>
             );
         }
 
         if (props.name) {
-            return(
+            return (
                 <li className="nav-item">
                     <Link className="nav-item-button" to={props.to}>
                         {props.name}
                     </Link>
                 </li>
-            )
+            );
         }
         return (
             <li className="nav-item">
-            <Link className="icon-button" to={props.to}>
-                {props.icon}
-            </Link>
+                <Link className="icon-button" to={props.to}>
+                    {props.icon}
+                </Link>
             </li>
         );
     };
@@ -137,15 +156,22 @@ const MainNavbar = () => {
         <Styles>
             <div className="navdiv">
                 <Navbar>
-                    <div className="nav-item-container">
-                    <div style={{display: 'flex'}}>
-                        <NavItem name="About" to="/about"></NavItem>
-                        <NavItem name="Videos" to="/videos"></NavItem>
-                    </div>
-                    <NavItem icon={<AccountIcon />}>
-                        <DropdownMenu></DropdownMenu>
-                    </NavItem>
-                    </div>
+                    {isLoggedIn ? (
+                        <div className="nav-item-container">
+                            <div style={{ display: "flex" }}>
+                                <NavItem name="About" to="/about"></NavItem>
+                                <NavItem name="Videos" to="/videos"></NavItem>
+                            </div>
+                            <NavItem icon={<AccountIcon />}>
+                                <DropdownMenu></DropdownMenu>
+                            </NavItem>
+                        </div>
+                    ) : (
+                        <div style={{ display: "flex" }}>
+                            <NavItem name="Login" to="/login"></NavItem>
+                            <NavItem name="SignUp" to="/signup"></NavItem>
+                        </div>
+                    )}
                 </Navbar>
             </div>
         </Styles>
@@ -153,5 +179,3 @@ const MainNavbar = () => {
 };
 
 export default MainNavbar;
-
-

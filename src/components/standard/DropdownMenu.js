@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { AccountContext } from "../auth/Accounts";
 
 const Styles = styled.div`
     .dropdown {
@@ -54,6 +55,14 @@ const Styles = styled.div`
 `;
 
 const DropdownMenu = () => {
+    const { logout } = useContext(AccountContext);
+
+    const onLogout = () => {
+        //Reload state of loggedin and logged out
+        logout();
+        window.location.reload();
+    };
+
     const DropdownItem = (props) => {
         const to = props.to;
 
@@ -88,7 +97,7 @@ const DropdownMenu = () => {
                             marginTop: "5px",
                         }}
                     ></div>
-                    <DropdownItem to="/login">Login</DropdownItem>
+                    <DropdownItem onClick={onLogout}>Log out</DropdownItem>
                 </div>
             </div>
         </Styles>
