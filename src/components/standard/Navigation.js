@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import AccountIcon from "./icons/AccountIcon";
-import MainLogo from "../../assets/raise_logo_background_white.png";
+import MainLogo from "../../assets/logos/raise_logo_background_white.png";
 import { AccountContext } from "../auth/Accounts";
 
 const Styles = styled.div`
