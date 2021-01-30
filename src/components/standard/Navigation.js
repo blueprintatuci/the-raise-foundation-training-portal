@@ -74,18 +74,6 @@ const Styles = styled.div`
 `;
 
 const MainNavbar = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const { getSession } = useContext(AccountContext);
-
-    useEffect(() => {
-        getSession()
-            .then(() => {
-                setIsLoggedIn(true);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    });
     const Navbar = (props) => {
         return (
             <nav className="navbar">
@@ -156,22 +144,15 @@ const MainNavbar = () => {
         <Styles>
             <div className="navdiv">
                 <Navbar>
-                    {isLoggedIn ? (
-                        <div className="nav-item-container">
-                            <div style={{ display: "flex" }}>
-                                <NavItem name="About" to="/about"></NavItem>
-                                <NavItem name="Videos" to="/videos"></NavItem>
-                            </div>
-                            <NavItem icon={<AccountIcon />}>
-                                <DropdownMenu></DropdownMenu>
-                            </NavItem>
-                        </div>
-                    ) : (
+                    <div className="nav-item-container">
                         <div style={{ display: "flex" }}>
-                            <NavItem name="Login" to="/login"></NavItem>
-                            <NavItem name="SignUp" to="/signup"></NavItem>
+                            <NavItem name="About" to="/about"></NavItem>
+                            <NavItem name="Videos" to="/videos"></NavItem>
                         </div>
-                    )}
+                        <NavItem icon={<AccountIcon />}>
+                            <DropdownMenu></DropdownMenu>
+                        </NavItem>
+                    </div>
                 </Navbar>
             </div>
         </Styles>

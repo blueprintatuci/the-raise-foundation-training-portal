@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { AccountContext } from "../auth/Accounts";
@@ -55,7 +55,18 @@ const Styles = styled.div`
 `;
 
 const DropdownMenu = () => {
-    const { logout } = useContext(AccountContext);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const { logout, getSession } = useContext(AccountContext);
+    useEffect(() => {
+        getSession()
+            .then(() => {
+                setIsLoggedIn(true);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    });
 
     const onLogout = () => {
         //Reload state of loggedin and logged out
@@ -89,7 +100,15 @@ const DropdownMenu = () => {
         <Styles>
             <div className="dropdown">
                 <div className="menu">
-                    <DropdownItem to="/signup">Sign Up</DropdownItem>
+                    {isLoggedIn ? (
+                        <div>
+                            <DropdownItem to="">My Account</DropdownItem>
+                            <DropdownItem to="">Settings</DropdownItem>
+                        </div>
+                    ) : (
+                        <DropdownItem to="/signup">Sign Up</DropdownItem>
+                    )}
+
                     <div
                         style={{
                             borderTop: "1px solid black",
@@ -97,7 +116,9 @@ const DropdownMenu = () => {
                             marginTop: "5px",
                         }}
                     ></div>
-                    <DropdownItem onClick={onLogout}>Log out</DropdownItem>
+                    {isLoggedIn && (
+                        <DropdownItem onClick={onLogout}>Log out</DropdownItem>
+                    )}
                 </div>
             </div>
         </Styles>

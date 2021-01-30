@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { AccountContext } from "./Accounts";
 import { Container, Form } from "react-bootstrap";
-import MainLogo from "../../assets/raise_logo_background.png";
+import MainLogo from "../../assets/logos/raise_logo_background.png";
 import GradientButton from "../standard/GradientButton";
 import { Redirect } from "react-router-dom";
 
