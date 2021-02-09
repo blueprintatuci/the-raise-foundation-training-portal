@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import AccountIcon from "./icons/AccountIcon";
 import MainLogo from "../../assets/logos/raise_logo_background_white.png";
+import { AccountContext } from "../auth/Accounts";
+import Avatar from "@material-ui/core/Avatar";
 
 const Styles = styled.div`
     .navdiv {
@@ -70,9 +72,31 @@ const Styles = styled.div`
         transform: translateY(-2px);
         transition: 0.3s;
     }
+
+    .initials-avatar {
+        background: #f1f1f1;
+        color: rgb(1, 131, 225);
+        color: linear-gradient(
+            90deg,
+            rgba(1, 131, 225, 1) 0%,
+            rgba(90, 184, 253, 1) 100%
+        );
+    }
 `;
 
 const MainNavbar = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const { getSession } = useContext(AccountContext);
+    useEffect(() => {
+        getSession()
+            .then(() => {
+                setIsLoggedIn(true);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    });
     const Navbar = (props) => {
         return (
             <nav className="navbar">
@@ -148,9 +172,22 @@ const MainNavbar = () => {
                             <NavItem name="About" to="/about"></NavItem>
                             <NavItem name="Videos" to="/videos"></NavItem>
                         </div>
-                        <NavItem icon={<AccountIcon />}>
-                            <DropdownMenu></DropdownMenu>
-                        </NavItem>
+
+                        {isLoggedIn ? (
+                            <NavItem
+                                icon={
+                                    <Avatar className="initials-avatar">
+                                        KH
+                                    </Avatar>
+                                }
+                            >
+                                <DropdownMenu></DropdownMenu>
+                            </NavItem>
+                        ) : (
+                            <NavItem icon={<AccountIcon />}>
+                                <DropdownMenu></DropdownMenu>
+                            </NavItem>
+                        )}
                     </div>
                 </Navbar>
             </div>
