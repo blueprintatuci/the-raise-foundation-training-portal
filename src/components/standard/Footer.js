@@ -5,7 +5,7 @@ import linkedin from "../../assets/icons/linkedin.png";
 import twitter from "../../assets/icons/twitter.png";
 
 const Styles = styled.div`
-    height: 25vh;
+    min-height: 25vh;
     width: 100%;
 
     background: rgb(1, 131, 225);
