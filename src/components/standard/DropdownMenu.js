@@ -116,8 +116,10 @@ const DropdownMenu = () => {
                             marginTop: "5px",
                         }}
                     ></div>
-                    {isLoggedIn && (
+                    {isLoggedIn ? (
                         <DropdownItem onClick={onLogout}>Log out</DropdownItem>
+                    ) : (
+                        <DropdownItem to="login">Login</DropdownItem>
                     )}
                 </div>
             </div>
