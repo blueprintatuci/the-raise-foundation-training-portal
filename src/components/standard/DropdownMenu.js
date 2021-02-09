@@ -102,7 +102,9 @@ const DropdownMenu = () => {
                 <div className="menu">
                     {isLoggedIn ? (
                         <div>
-                            <DropdownItem to="">My Account</DropdownItem>
+                            <DropdownItem to="/account">
+                                My Account
+                            </DropdownItem>
                             <DropdownItem to="">Settings</DropdownItem>
                         </div>
                     ) : (
