@@ -27,6 +27,7 @@ const Styles = styled.div`
         min-width: 350px;
         padding: 2rem;
         margin-top: 3rem;
+        margin-bottom: 3rem;
         border-radius: 15px;
         width: 450px;
     }

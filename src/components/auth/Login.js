@@ -7,6 +7,9 @@ import GradientButton from "../standard/GradientButton";
 import { Redirect } from "react-router-dom";
 
 const Styles = styled.div`
+    height: auto;
+    background: #f1f1f1;
+
     .form-control {
         border: none;
         border-radius: 12px;
@@ -25,6 +28,7 @@ const Styles = styled.div`
         min-width: 350px;
         padding: 2rem;
         margin-top: 3rem;
+        margin-bottom: 5rem;
         border-radius: 15px;
         width: 450px;
     }
