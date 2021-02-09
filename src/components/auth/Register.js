@@ -27,6 +27,7 @@ const Styles = styled.div`
         min-width: 350px;
         padding: 2rem;
         margin-top: 3rem;
+        margin-bottom: 3rem;
         border-radius: 15px;
         width: 450px;
     }
@@ -202,6 +203,10 @@ const Register = () => {
         Name: "custom:license",
         Value: license,
     };
+    let dataPhone = {
+        Name: "custom:phone_number",
+        Value: phone,
+    };
 
     let attributeEmail = new CognitoUserAttribute(dataEmail);
     let attributeFirstName = new CognitoUserAttribute(dataFirstName);
@@ -213,6 +218,7 @@ const Register = () => {
     let attributeOccupation = new CognitoUserAttribute(dataOccupation);
     let attributeLicenseType = new CognitoUserAttribute(dataLicenseType);
     let attributeLicense = new CognitoUserAttribute(dataLicense);
+    let attributePhone = new CognitoUserAttribute(dataPhone);
 
     let attributeList = [];
 
@@ -226,6 +232,7 @@ const Register = () => {
     attributeList.push(attributeOccupation);
     attributeList.push(attributeLicenseType);
     attributeList.push(attributeLicense);
+    attributeList.push(attributePhone);
 
     const cognitoUser = new CognitoUser(userData);
 
@@ -278,6 +285,11 @@ const Register = () => {
                 nextStep();
             }
         });
+    };
+
+    const handleHistoryBack = (event) => {
+        event.preventDefault();
+        window.history.back();
     };
 
     if (verified) {
@@ -390,7 +402,11 @@ const Register = () => {
                                 />
                                 <Form.Row>
                                     <Col>
-                                        <Button className="back-button" block>
+                                        <Button
+                                            className="back-button"
+                                            block
+                                            onClick={handleHistoryBack}
+                                        >
                                             Back
                                         </Button>
                                     </Col>

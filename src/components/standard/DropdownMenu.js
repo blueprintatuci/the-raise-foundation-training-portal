@@ -1,6 +1,7 @@
-import React, {  } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { AccountContext } from "../auth/Accounts";
 
 const Styles = styled.div`
     .dropdown {
@@ -14,12 +15,11 @@ const Styles = styled.div`
         padding: 1rem;
         overflow: hidden;
         transition: height 500ms ease;
-        border-radius: 10px
+        border-radius: 10px;
     }
 
     .menu {
         width: 100%;
-        
     }
 
     .menu-item {
@@ -28,7 +28,7 @@ const Styles = styled.div`
         align-items: center;
         transition: background 500ms;
         padding: 0.5rem;
-        color: #0183e1
+        color: #0183e1;
     }
 
     .menu-item .icon-button {
@@ -55,6 +55,24 @@ const Styles = styled.div`
 `;
 
 const DropdownMenu = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const { logout, getSession } = useContext(AccountContext);
+    useEffect(() => {
+        getSession()
+            .then(() => {
+                setIsLoggedIn(true);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    });
+
+    const onLogout = () => {
+        //Reload state of loggedin and logged out
+        logout();
+        window.location.reload();
+    };
 
     const DropdownItem = (props) => {
         const to = props.to;
@@ -62,17 +80,17 @@ const DropdownMenu = () => {
         if (!to) {
             return (
                 <a className="menu-item" onClick={props.onClick}>
-                <span className="icon-button">{props.leftIcon}</span>
-                {props.children}
-                <span className="icon-right">{props.rightIcon}</span>
+                    <span className="icon-button">{props.leftIcon}</span>
+                    {props.children}
+                    <span className="icon-right">{props.rightIcon}</span>
                 </a>
             );
         } else {
             return (
                 <Link to={props.to} className="menu-item">
-                <span className="icon-button">{props.leftIcon}</span>
-                {props.children}
-                <span className="icon-right">{props.rightIcon}</span>
+                    <span className="icon-button">{props.leftIcon}</span>
+                    {props.children}
+                    <span className="icon-right">{props.rightIcon}</span>
                 </Link>
             );
         }
@@ -80,19 +98,31 @@ const DropdownMenu = () => {
 
     return (
         <Styles>
-        <div className="dropdown">
-            <div className="menu">
-            <DropdownItem to="/signup">Sign Up</DropdownItem>
-            <div
-                style={{
-                borderTop: "1px solid black",
-                paddingTop: "5px",
-                marginTop: "5px",
-                }}
-            ></div>
-            <DropdownItem>Login</DropdownItem>
+            <div className="dropdown">
+                <div className="menu">
+                    {isLoggedIn ? (
+                        <div>
+                            <DropdownItem to="">My Account</DropdownItem>
+                            <DropdownItem to="">Settings</DropdownItem>
+                        </div>
+                    ) : (
+                        <DropdownItem to="/signup">Sign Up</DropdownItem>
+                    )}
+
+                    <div
+                        style={{
+                            borderTop: "1px solid black",
+                            paddingTop: "5px",
+                            marginTop: "5px",
+                        }}
+                    ></div>
+                    {isLoggedIn ? (
+                        <DropdownItem onClick={onLogout}>Log out</DropdownItem>
+                    ) : (
+                        <DropdownItem to="login">Login</DropdownItem>
+                    )}
+                </div>
             </div>
-        </div>
         </Styles>
     );
 };
