@@ -10,9 +10,11 @@ const Styles = styled.div`
         margin: 30px;
         margin-top: 0;
         border-radius: 15px;
-        padding: 10px;
+        padding: 15px;
         display: flex;
         align-items: center;
+        // justify-content: center;
+        max-width: 550px;
     }
     .initials-avatar {
         margin: 1rem;

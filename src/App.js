@@ -21,21 +21,21 @@ const Styles = styled.div`
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    getSession()
+        .then(() => {
+            setIsLoggedIn(true);
+            console.log(isLoggedIn);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
 
-    useEffect(() => {
-        getSession()
-            .then(() => {
-                setIsLoggedIn(true);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    });
     return (
         <Account>
             <Router>
                 <Styles>
                     <MainNavbar />
+
                     <Switch>
                         <Route exact path="/" component={HomePage} />
                         <Route exact path="/signup" component={SignUp} />
@@ -44,11 +44,9 @@ function App() {
                             exact
                             path="/account"
                             render={() => {
-                                if (isLoggedIn) return <AccountInfo />;
-                                else {
-                                    return <Redirect to="/login"></Redirect>;
-                                }
+                                return <AccountInfo isLoggedIn={isLoggedIn} />;
                             }}
+                            // component={AccountInfo}
                         />
                     </Switch>
                 </Styles>

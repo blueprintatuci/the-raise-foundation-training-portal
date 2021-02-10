@@ -6,7 +6,7 @@ import AccountIcon from "./icons/AccountIcon";
 import MainLogo from "../../assets/logos/raise_logo_background_white.png";
 import { AccountContext } from "../auth/Accounts";
 import Avatar from "@material-ui/core/Avatar";
-
+import { useLocation } from "react-router-dom";
 const Styles = styled.div`
     .navdiv {
         background: rgb(1, 131, 225);
@@ -84,31 +84,33 @@ const Styles = styled.div`
     }
 `;
 
-const MainNavbar = () => {
+const MainNavbar = (props) => {
+    useLocation();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const { getSession } = useContext(AccountContext);
-    useEffect(() => {
-        getSession()
-            .then(() => {
-                setIsLoggedIn(true);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    });
+    getSession()
+        .then(() => {
+            setIsLoggedIn(true);
+            console.log(isLoggedIn);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
     const Navbar = (props) => {
         return (
-            <nav className="navbar">
-                <span className="logo">
-                    <Link to="/">
-                        <img alt="" src={MainLogo} height="60px"></img>
-                    </Link>
-                </span>
-                <span className="navbar-nav">
-                    <ul>{props.children}</ul>
-                </span>
-            </nav>
+            <div>
+                <nav className="navbar">
+                    <span className="logo">
+                        <Link to="/">
+                            <img alt="" src={MainLogo} height="60px"></img>
+                        </Link>
+                    </span>
+                    <span className="navbar-nav">
+                        <ul>{props.children}</ul>
+                    </span>
+                </nav>
+            </div>
         );
     };
     const NavItem = (props) => {
@@ -181,11 +183,15 @@ const MainNavbar = () => {
                                     </Avatar>
                                 }
                             >
-                                <DropdownMenu></DropdownMenu>
+                                <DropdownMenu
+                                    isLoggedIn={isLoggedIn}
+                                ></DropdownMenu>
                             </NavItem>
                         ) : (
                             <NavItem icon={<AccountIcon />}>
-                                <DropdownMenu></DropdownMenu>
+                                <DropdownMenu
+                                    isLoggedIn={isLoggedIn}
+                                ></DropdownMenu>
                             </NavItem>
                         )}
                     </div>

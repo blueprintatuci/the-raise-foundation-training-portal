@@ -72,11 +72,14 @@ const Login = () => {
     const onSubmit = (event) => {
         event.preventDefault();
         authenticate(email, password)
-            .then((data) => {
+            .then(() => {
                 setLoggedIn(true);
             })
-            .catch((err) => {});
+            .catch((err) => {
+                console.error(err);
+            });
     };
+
     if (loggedIn) {
         return <Redirect to="/"></Redirect>;
     }
