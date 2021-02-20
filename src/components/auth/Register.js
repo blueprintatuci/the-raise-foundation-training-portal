@@ -204,7 +204,7 @@ const Register = () => {
         Value: license,
     };
     let dataPhone = {
-        Name: "custom:phone_number",
+        Name: "phone_number",
         Value: phone,
     };
 
@@ -278,6 +278,8 @@ const Register = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setPhone("+1" + phone);
+        console.log(phone);
         userPool.signUp(email, password, attributeList, null, (err, data) => {
             if (err) {
                 console.error(err);
