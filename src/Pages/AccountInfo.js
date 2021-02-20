@@ -1,10 +1,11 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import AccountOverview from "../components/accountInfo/AccountOverview";
 import Demographics from "../components/accountInfo/Demographics";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
+import { AccountContext } from "../components/auth/Accounts";
 
 const Styles = styled.div`
     background: white;
@@ -42,26 +43,41 @@ const Styles = styled.div`
 `;
 
 const AccountInfo = (props) => {
-    return (
-        <Styles>
-            <div className="header">
-                <div>
-                    <Link className="back-button" to="/videos" block>
-                        Back to Video Library
-                    </Link>
-                    <div className="title">Account</div>
+    const { getSession } = useContext(AccountContext);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    getSession()
+        .then(() => {
+            setIsLoggedIn(true);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+
+    if (isLoggedIn) {
+        return (
+            <Styles>
+                <div className="header">
+                    <div>
+                        <Link className="back-button" to="/videos" block>
+                            Back to Video Library
+                        </Link>
+                        <div className="title">Account</div>
+                    </div>
+                    <div>
+                        <IconButton className="edit-button">
+                            <EditIcon fontSize="large" />
+                        </IconButton>
+                    </div>
                 </div>
-                <div>
-                    <IconButton className="edit-button">
-                        <EditIcon fontSize="large" />
-                    </IconButton>
-                </div>
-            </div>
-            <AccountOverview />
-            <div className="subheader">Demographic Info</div>
-            <Demographics />
-        </Styles>
-    );
+                <AccountOverview />
+                <div className="subheader">Demographic Info</div>
+                <Demographics />
+            </Styles>
+        );
+    } else {
+        return <div></div>;
+    }
 };
 
 export default AccountInfo;

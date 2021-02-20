@@ -24,7 +24,6 @@ function App() {
     getSession()
         .then(() => {
             setIsLoggedIn(true);
-            console.log(isLoggedIn);
         })
         .catch((err) => {
             console.error(err);
@@ -38,15 +37,14 @@ function App() {
 
                     <Switch>
                         <Route exact path="/" component={HomePage} />
-                        <Route exact path="/signup" component={SignUp} />
                         <Route exact path="/login" component={Login} />
+                        <Route path="/signup" component={SignUp} />
                         <Route
                             exact
                             path="/account"
                             render={() => {
                                 return <AccountInfo isLoggedIn={isLoggedIn} />;
                             }}
-                            // component={AccountInfo}
                         />
                     </Switch>
                 </Styles>

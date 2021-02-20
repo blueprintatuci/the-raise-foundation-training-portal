@@ -64,7 +64,6 @@ const Demographics = () => {
     const [occupation, setOccupation] = useState("");
     const [licenseType, setLicenseType] = useState("");
     const [license, setLicense] = useState("");
-
     return (
         <Styles>
             <div className="demographic-container">

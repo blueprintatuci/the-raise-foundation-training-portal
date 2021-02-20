@@ -92,7 +92,6 @@ const MainNavbar = (props) => {
     getSession()
         .then(() => {
             setIsLoggedIn(true);
-            console.log(isLoggedIn);
         })
         .catch((err) => {
             console.error(err);

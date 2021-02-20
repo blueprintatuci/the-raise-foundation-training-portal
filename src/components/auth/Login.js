@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { AccountContext } from "./Accounts";
 import { Container, Form } from "react-bootstrap";
@@ -64,10 +64,16 @@ const Styles = styled.div`
 `;
 
 const Login = () => {
+    let myRef = useRef();
+    useEffect(() => myRef.current && myRef.current.focus());
+
+    console.log(myRef);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
     const { authenticate } = useContext(AccountContext);
+    const testSRC =
+        "https://www.youtube.com/embed/nGeKSiCQkPw?controls=0&amp;modestbranding=1";
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -84,10 +90,25 @@ const Login = () => {
         return <Redirect to="/"></Redirect>;
     }
 
+    var params =
+        "rel=0&controls=0&showinfo=0&autoplay=1&loop=1&modestbranding=1&playlist=ywFGJecodxQ";
+
+    // var fullpath = iframe.src + ? + params;
+    // console.log(fullpath);
+
+    // iframe.src = fullpath;
+
     return (
         <Styles>
             <div>
-                <Container className="form-container">
+                {/* <iframe
+                    ref={myRef}
+                    title="title"
+                    class="gtms-intro"
+                    src="https://www.youtube.com/embed/ywFGJecodxQ?rel=0&controls=0&modestbranding=1&showInfo=0&start=30"
+                    frameborder="0"
+                ></iframe> */}
+                <Container id="tester" className="form-container">
                     <div className="form-wrapper">
                         <Form>
                             <img

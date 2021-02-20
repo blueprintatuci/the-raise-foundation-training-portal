@@ -32,6 +32,7 @@ const Account = (props) => {
                         reject();
                     } else {
                         resolve(session);
+                        console.log(session);
                     }
                 });
             } else {
