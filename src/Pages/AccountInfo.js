@@ -45,10 +45,12 @@ const Styles = styled.div`
 const AccountInfo = (props) => {
     const { getSession } = useContext(AccountContext);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userId, setUserId] = useState("");
 
     getSession()
         .then(() => {
             setIsLoggedIn(true);
+            // setUserId(data.accessToken.payload.username);
         })
         .catch((err) => {
             console.error(err);
@@ -71,7 +73,9 @@ const AccountInfo = (props) => {
                     </div>
                 </div>
                 <AccountOverview />
-                <div className="subheader">Demographic Info</div>
+                <div className="subheader" userId={userId}>
+                    Demographic Info
+                </div>
                 <Demographics />
             </Styles>
         );

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
+import User from "../../api/User";
 
 const Styles = styled.div`
     .demographic-container {
@@ -55,14 +56,7 @@ const Styles = styled.div`
     }
 `;
 
-const Demographics = () => {
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [degreeLevel, setDegreeLevel] = useState("");
-    const [degreeFocus, setDegreeFocus] = useState("");
-    const [occupation, setOccupation] = useState("");
-    const [licenseType, setLicenseType] = useState("");
-    const [license, setLicense] = useState("");
+const Demographics = ({ userId }) => {
     const [accountInfo, setAcccountInfo] = useState({
         city: "Irvine",
         state: "California",
@@ -71,6 +65,10 @@ const Demographics = () => {
         occupation: "Software Engineer",
         license: "",
     });
+
+    useEffect(() => {
+        User.getUserById(userId).then().catch();
+    }, []);
 
     return (
         <Styles>
