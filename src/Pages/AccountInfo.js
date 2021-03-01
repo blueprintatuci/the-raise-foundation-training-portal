@@ -42,19 +42,27 @@ const Styles = styled.div`
     }
 `;
 
-const AccountInfo = (props) => {
+const AccountInfo = () => {
     const { getSession } = useContext(AccountContext);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userId, setUserId] = useState("");
 
-    getSession()
-        .then(() => {
-            setIsLoggedIn(true);
-            // setUserId(data.accessToken.payload.username);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+    getSession().then((test) => {
+        setIsLoggedIn(true);
+
+        console.log(test);
+    });
+
+    // getSession()
+    //     .then((res) => {
+    //         setIsLoggedIn(true);
+    //         console.log("test: ", res);
+    //         setUserId(res.accessToken.payload.username);
+    //         setSession(res);
+    //     })
+    //     .catch((err) => {
+    //         console.error(err);
+    //     });
 
     if (isLoggedIn) {
         return (
@@ -73,10 +81,8 @@ const AccountInfo = (props) => {
                     </div>
                 </div>
                 <AccountOverview />
-                <div className="subheader" userId={userId}>
-                    Demographic Info
-                </div>
-                <Demographics />
+                <div className="subheader">Demographic Info</div>
+                <Demographics userId={userId} />
             </Styles>
         );
     } else {

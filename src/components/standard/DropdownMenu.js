@@ -16,6 +16,7 @@ const Styles = styled.div`
         overflow: hidden;
         transition: height 500ms ease;
         border-radius: 10px;
+        z-index: 100;
     }
 
     .menu {

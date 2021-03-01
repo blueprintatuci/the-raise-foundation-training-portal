@@ -135,6 +135,7 @@ const Styles = styled.div`
 
 const Register = () => {
     const steps = 4;
+
     const [currentStep, setCurrentStep] = useState(1);
 
     const [email, setEmail] = useState("");

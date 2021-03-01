@@ -4,7 +4,7 @@ import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 
 const AccountContext = createContext();
 
-let userSession = {};
+// let userSession = {};
 
 const getSession = async () => {
     await new Promise((resolve, reject) => {
@@ -15,7 +15,7 @@ const getSession = async () => {
                     reject();
                 } else {
                     resolve(session);
-                    userSession = session;
+                    // userSession = session;
                 }
             });
         } else {
@@ -26,10 +26,8 @@ const getSession = async () => {
 };
 
 const Account = (props) => {
-    const [session, setSession] = useState({});
-
     const getSession = async () => {
-        await new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const user = Pool.getCurrentUser();
             if (user) {
                 user.getSession((err, session) => {
@@ -37,7 +35,6 @@ const Account = (props) => {
                         reject();
                     } else {
                         resolve(session);
-                        setSession(session);
                     }
                 });
             } else {

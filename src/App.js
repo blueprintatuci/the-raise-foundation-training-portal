@@ -39,13 +39,7 @@ function App() {
                         <Route exact path="/" component={HomePage} />
                         <Route exact path="/login" component={Login} />
                         <Route path="/signup" component={SignUp} />
-                        <Route
-                            exact
-                            path="/account"
-                            render={() => {
-                                return <AccountInfo isLoggedIn={isLoggedIn} />;
-                            }}
-                        />
+                        <Route exact path="/account" component={AccountInfo} />
                     </Switch>
                 </Styles>
                 <Footer />
