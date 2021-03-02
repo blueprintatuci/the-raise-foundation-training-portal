@@ -280,7 +280,6 @@ const Register = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         setPhone("+1" + phone);
-        console.log(phone);
         userPool.signUp(email, password, attributeList, null, (err, data) => {
             if (err) {
                 console.error(err);

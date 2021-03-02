@@ -67,7 +67,6 @@ const Login = () => {
     let myRef = useRef();
     useEffect(() => myRef.current && myRef.current.focus());
 
-    console.log(myRef);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
@@ -90,24 +89,9 @@ const Login = () => {
         return <Redirect to="/"></Redirect>;
     }
 
-    var params =
-        "rel=0&controls=0&showinfo=0&autoplay=1&loop=1&modestbranding=1&playlist=ywFGJecodxQ";
-
-    // var fullpath = iframe.src + ? + params;
-    // console.log(fullpath);
-
-    // iframe.src = fullpath;
-
     return (
         <Styles>
             <div>
-                {/* <iframe
-                    ref={myRef}
-                    title="title"
-                    class="gtms-intro"
-                    src="https://www.youtube.com/embed/ywFGJecodxQ?rel=0&controls=0&modestbranding=1&showInfo=0&start=30"
-                    frameborder="0"
-                ></iframe> */}
                 <Container id="tester" className="form-container">
                     <div className="form-wrapper">
                         <Form>

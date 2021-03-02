@@ -32,7 +32,6 @@ const Account = (props) => {
                         reject();
                     } else {
                         resolve(session);
-                        console.log(session);
                     }
                 });
             } else {
@@ -52,7 +51,6 @@ const Account = (props) => {
 
             cognitoUser.authenticateUser(authDetails, {
                 onSuccess: (data) => {
-                    console.log(data);
                     resolve(data);
                 },
                 onFailure: (err) => {
