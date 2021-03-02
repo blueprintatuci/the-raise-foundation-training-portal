@@ -7,6 +7,7 @@ import { Container, Form, Button, Col } from "react-bootstrap";
 import MainLogo from "../../assets/logos/raise_logo_background.png";
 import Pinwheel from "../../assets/illustrations/pinwheel.png";
 import GradientButton from "../standard/GradientButton";
+import { useHistory } from "react-router-dom";
 
 const Styles = styled.div`
     .form-control {
@@ -287,9 +288,11 @@ const Register = () => {
         });
     };
 
+    const history = useHistory();
+
     const handleHistoryBack = (event) => {
         event.preventDefault();
-        window.history.back();
+        history.back();
     };
 
     if (verified) {
@@ -307,7 +310,13 @@ const Register = () => {
                                 You're Set!
                             </div>
                             <Form.Row>
-                                <GradientButton text="Go to Login" />
+                                <GradientButton
+                                    block
+                                    text="Go to Login"
+                                    onClick={() => {
+                                        history.push("/login");
+                                    }}
+                                />
                             </Form.Row>
                             <div className="pinwheel-wrapper">
                                 <img
@@ -412,6 +421,7 @@ const Register = () => {
                                     </Col>
                                     <Col>
                                         <GradientButton
+                                            block
                                             text="Next"
                                             onClick={nextStep}
                                         />
@@ -534,6 +544,7 @@ const Register = () => {
                                     </Col>
                                     <Col>
                                         <GradientButton
+                                            block
                                             text="Next"
                                             onClick={nextStep}
                                         />
@@ -697,6 +708,7 @@ const Register = () => {
                                     </Col>
                                     <Col>
                                         <GradientButton
+                                            block
                                             text="Submit"
                                             onClick={handleSubmit}
                                         />
@@ -738,6 +750,7 @@ const Register = () => {
                                 <Form.Row>
                                     <Col>
                                         <GradientButton
+                                            block
                                             text="Submit"
                                             onClick={onVerify}
                                         />

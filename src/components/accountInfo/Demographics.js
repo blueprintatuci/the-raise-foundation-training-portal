@@ -55,45 +55,39 @@ const Styles = styled.div`
     }
 `;
 
-const Demographics = () => {
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-
-    const [degreeLevel, setDegreeLevel] = useState("");
-    const [degreeFocus, setDegreeFocus] = useState("");
-    const [occupation, setOccupation] = useState("");
-    const [licenseType, setLicenseType] = useState("");
-    const [license, setLicense] = useState("");
+const Demographics = ({ accountInfo }) => {
     return (
         <Styles>
             <div className="demographic-container">
                 <Row>
                     <Col className="demographic-field">City</Col>
-                    <Col>Irvine</Col>
+                    <Col>{accountInfo.city}</Col>
                 </Row>
                 <Row>
                     <Col className="demographic-field">State</Col>
-                    <Col>California</Col>
+                    <Col>{accountInfo.state}</Col>
                 </Row>
 
                 <Row>
                     <Col className="demographic-field">
                         Level of Degree Attained
                     </Col>
-                    <Col>Bachelor's</Col>
+                    <Col>{accountInfo.degree_level}</Col>
                 </Row>
                 <Row>
                     <Col className="demographic-field">
                         Degree Area of Focus
                     </Col>
-                    <Col>Computer Science</Col>
+                    <Col>{accountInfo.degree_focus}</Col>
                 </Row>
                 <Row>
                     <Col className="demographic-field">Occupation</Col>
-                    <Col>Software Engineer</Col>
+                    <Col>{accountInfo.occupation}</Col>
                 </Row>
                 <Row>
-                    <Col className="demographic-field">License</Col>
+                    <Col className="demographic-field">
+                        {accountInfo.license}
+                    </Col>
                     <Col></Col>
                 </Row>
             </div>

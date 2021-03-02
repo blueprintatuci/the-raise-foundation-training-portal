@@ -141,7 +141,11 @@ const Login = () => {
                                 />
                             </Form.Group>
 
-                            <GradientButton text="Login" onClick={onSubmit} />
+                            <GradientButton
+                                block
+                                text="Login"
+                                onClick={onSubmit}
+                            />
                             <div className="actions">
                                 <a href="/">Continue as Guest</a>
                                 <a href="/signup">Sign Up</a>
