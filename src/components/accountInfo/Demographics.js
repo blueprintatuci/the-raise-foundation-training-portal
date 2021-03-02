@@ -56,20 +56,7 @@ const Styles = styled.div`
     }
 `;
 
-const Demographics = ({ userId }) => {
-    const [accountInfo, setAcccountInfo] = useState({
-        city: "Irvine",
-        state: "California",
-        degree_level: "Bachelor's",
-        degree_focus: "Computer Science",
-        occupation: "Software Engineer",
-        license: "",
-    });
-
-    useEffect(() => {
-        User.getUserById(userId).then().catch();
-    }, []);
-
+const Demographics = ({ accountInfo }) => {
     return (
         <Styles>
             <div className="demographic-container">
@@ -94,16 +81,22 @@ const Demographics = ({ userId }) => {
                     </Col>
                     <Col>{accountInfo.degree_focus}</Col>
                 </Row>
+
                 <Row>
                     <Col className="demographic-field">Occupation</Col>
                     <Col>{accountInfo.occupation}</Col>
                 </Row>
-                <Row>
-                    <Col className="demographic-field">
-                        {accountInfo.license}
-                    </Col>
-                    <Col></Col>
-                </Row>
+                {accountInfo.license && (
+                    <Row>
+                        <Col className="demographic-field">License Type</Col>
+                        <Col>
+                            <div>
+                                {accountInfo.license_type} :{" "}
+                                {accountInfo.license}
+                            </div>
+                        </Col>
+                    </Row>
+                )}
             </div>
         </Styles>
     );

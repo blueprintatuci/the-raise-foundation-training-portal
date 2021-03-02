@@ -1,10 +1,5 @@
-import {
-    BrowserRouter as Router,
-    Redirect,
-    Route,
-    Switch,
-} from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useState } from "react";
 import HomePage from "./pages/HomePage.js";
 import MainNavbar from "./components/standard/Navigation.js";
 import Footer from "./components/standard/Footer";

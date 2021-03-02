@@ -2,10 +2,15 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import AccountOverview from "../components/accountInfo/AccountOverview";
 import Demographics from "../components/accountInfo/Demographics";
+import EditDemographics from "../components/accountInfo/EditDemographics";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import { AccountContext } from "../components/auth/Accounts";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const Styles = styled.div`
     background: white;
@@ -31,6 +36,7 @@ const Styles = styled.div`
         color: rgb(1, 131, 225);
         border: none;
         outline: none;
+        font-size: 2.5rem;
     }
 
     .back-button {
@@ -45,7 +51,35 @@ const Styles = styled.div`
 const AccountInfo = () => {
     const { getSession } = useContext(AccountContext);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userId, setUserId] = useState("");
+    const [edit, setEdit] = useState(false);
+
+    const [toasterOpened, setToasterOpened] = useState(false);
+    const [updateSuccess, setUpdateSuccess] = useState(false);
+
+    const [accountInfo, setAccountInfo] = useState({
+        city: "Irvine",
+        state: "CA",
+        degree_level: "Bachelor's",
+        degree_focus: "Computer Science",
+        occupation: "Software Engineer",
+        license: "",
+    });
+
+    const openToaster = () => {
+        setToasterOpened(true);
+    };
+
+    const closeToaster = () => {
+        setToasterOpened(false);
+    };
+
+    const updateEditSuccess = (status) => {
+        setUpdateSuccess(status);
+    };
+
+    const updateAccountInfo = (ai) => {
+        setAccountInfo(ai);
+    };
 
     getSession().then((test) => {
         setIsLoggedIn(true);
@@ -64,6 +98,10 @@ const AccountInfo = () => {
     //         console.error(err);
     //     });
 
+    const toggleEditDemographics = () => {
+        setEdit(!edit);
+    };
+
     if (isLoggedIn) {
         return (
             <Styles>
@@ -74,15 +112,69 @@ const AccountInfo = () => {
                         </Link>
                         <div className="title">Account</div>
                     </div>
-                    <div>
-                        <IconButton className="edit-button">
-                            <EditIcon fontSize="large" />
-                        </IconButton>
-                    </div>
+                    {edit ? (
+                        <div>
+                            <IconButton
+                                className="edit-button"
+                                onClick={toggleEditDemographics}
+                            >
+                                <HighlightOffIcon fontSize="inherit" />
+                            </IconButton>
+                        </div>
+                    ) : (
+                        <div>
+                            <IconButton
+                                className="edit-button"
+                                onClick={toggleEditDemographics}
+                            >
+                                <EditIcon fontSize="inherit" />
+                            </IconButton>
+                        </div>
+                    )}
                 </div>
                 <AccountOverview />
                 <div className="subheader">Demographic Info</div>
-                <Demographics userId={userId} />
+                {edit ? (
+                    <EditDemographics
+                        accountInfo={accountInfo}
+                        updateAccountInfo={updateAccountInfo}
+                        updateEditSuccess={updateEditSuccess}
+                        openToaster={openToaster}
+                        toggleEdit={toggleEditDemographics}
+                    />
+                ) : (
+                    <Demographics accountInfo={accountInfo} />
+                )}
+
+                <Snackbar
+                    open={toasterOpened}
+                    onClose={closeToaster}
+                    autoHideDuration={6000}
+                    anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                    }}
+                >
+                    {updateSuccess ? (
+                        <MuiAlert
+                            onClose={closeToaster}
+                            elevation={6}
+                            variant="filled"
+                            severity="success"
+                        >
+                            Successfully updated account information
+                        </MuiAlert>
+                    ) : (
+                        <MuiAlert
+                            onClose={closeToaster}
+                            elevation={6}
+                            variant="filled"
+                            severity="error"
+                        >
+                            Failed to update account information
+                        </MuiAlert>
+                    )}
+                </Snackbar>
             </Styles>
         );
     } else {

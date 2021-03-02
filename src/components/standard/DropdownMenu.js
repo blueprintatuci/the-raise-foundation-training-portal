@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AccountContext } from "../auth/Accounts";
 
 const Styles = styled.div`
     .dropdown {
+        z-index: 10;
         position: absolute;
         top: 60px;
         right: -80px;
