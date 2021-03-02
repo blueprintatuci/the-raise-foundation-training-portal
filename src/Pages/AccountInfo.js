@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import { AccountContext } from "../components/auth/Accounts";
-import { Edit } from "@material-ui/icons";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 import Snackbar from "@material-ui/core/Snackbar";
@@ -37,6 +36,7 @@ const Styles = styled.div`
         color: rgb(1, 131, 225);
         border: none;
         outline: none;
+        font-size: 2.5rem;
     }
 
     .back-button {
@@ -109,7 +109,7 @@ const AccountInfo = (props) => {
                                 className="edit-button"
                                 onClick={toggleEditDemographics}
                             >
-                                <HighlightOffIcon fontSize="large" />
+                                <HighlightOffIcon fontSize="inherit" />
                             </IconButton>
                         </div>
                     ) : (
@@ -118,7 +118,7 @@ const AccountInfo = (props) => {
                                 className="edit-button"
                                 onClick={toggleEditDemographics}
                             >
-                                <EditIcon fontSize="large" />
+                                <EditIcon fontSize="inherit" />
                             </IconButton>
                         </div>
                     )}

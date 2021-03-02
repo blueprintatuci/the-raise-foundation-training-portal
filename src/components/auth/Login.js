@@ -71,8 +71,6 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
     const { authenticate } = useContext(AccountContext);
-    const testSRC =
-        "https://www.youtube.com/embed/nGeKSiCQkPw?controls=0&amp;modestbranding=1";
 
     const onSubmit = (event) => {
         event.preventDefault();

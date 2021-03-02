@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import GradientButton from "../standard/GradientButton";
-import { useHistory } from "react-router-dom";
 
 const Styles = styled.div`
     .demographic-container {
@@ -69,7 +68,6 @@ const EditDemographics = ({
     openToaster,
     toggleEdit,
 }) => {
-    const history = useHistory();
     const [accountInformation, setAccountInfo] = useState(accountInfo);
 
     const saveChanges = () => {
