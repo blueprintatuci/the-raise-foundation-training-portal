@@ -63,25 +63,19 @@ const Styles = styled.div`
 `;
 
 const EditDemographics = ({
+    accountInfo,
     updateAccountInfo,
     updateEditSuccess,
     openToaster,
     toggleEdit,
 }) => {
     const history = useHistory();
-    const [accountInfo, setAccountInfo] = useState({
-        city: "Irvine",
-        state: "CA",
-        degree_level: "Bachelor's",
-        degree_focus: "Computer Science",
-        occupation: "Software Engineer",
-        license: "",
-    });
+    const [accountInformation, setAccountInfo] = useState(accountInfo);
 
     const saveChanges = () => {
         // Note: add update endpoint here
         // history.push("/account");
-        updateAccountInfo(accountInfo); // test function
+        updateAccountInfo(accountInformation); // test function
         toggleEdit();
         openToaster();
         updateEditSuccess(true);
@@ -90,16 +84,15 @@ const EditDemographics = ({
     return (
         <Styles>
             <div className="demographic-container">
-                {accountInfo.occupation}
                 <Row className="field-row">
                     <Col className="demographic-field">City</Col>
                     <Col>
                         <Form.Group>
                             <Form.Control
-                                value={accountInfo.city}
+                                value={accountInformation.city}
                                 onChange={(event) =>
                                     setAccountInfo({
-                                        ...accountInfo,
+                                        ...accountInformation,
                                         city: event.target.value,
                                     })
                                 }
@@ -114,11 +107,11 @@ const EditDemographics = ({
                         <Form.Group>
                             <Form.Control
                                 className="form-select"
-                                value={accountInfo.state}
+                                value={accountInformation.state}
                                 as="select"
                                 onChange={(event) =>
                                     setAccountInfo({
-                                        ...accountInfo,
+                                        ...accountInformation,
                                         state: event.target.value,
                                     })
                                 }
@@ -190,12 +183,12 @@ const EditDemographics = ({
                         <Form.Group>
                             <Form.Control
                                 className="form-select"
-                                value={accountInfo.degreeLevel}
+                                value={accountInformation.degree_level}
                                 as="select"
                                 onChange={(event) =>
                                     setAccountInfo({
-                                        ...accountInfo,
-                                        degreeLevel: event.target.value,
+                                        ...accountInformation,
+                                        degree_level: event.target.value,
                                     })
                                 }
                             >
@@ -227,12 +220,12 @@ const EditDemographics = ({
                         <Form.Group>
                             <Form.Control
                                 className="form-select"
-                                value={accountInfo.degreeFocus}
+                                value={accountInformation.degree_focus}
                                 as="select"
                                 onChange={(event) =>
                                     setAccountInfo({
-                                        ...accountInfo,
-                                        degreeFocus: event.target.value,
+                                        ...accountInformation,
+                                        degree_focus: event.target.value,
                                     })
                                 }
                             >
@@ -251,13 +244,13 @@ const EditDemographics = ({
                             </Form.Control>
                         </Form.Group>
 
-                        {accountInfo.degreeFocus === "other" && (
+                        {accountInfo.degree_focus === "other" && (
                             <Form.Group className="other-specification">
                                 <Form.Control
                                     onChange={(event) =>
                                         setAccountInfo({
-                                            ...accountInfo,
-                                            degreeFocus: event.target.value,
+                                            ...accountInformation,
+                                            degree_focus: event.target.value,
                                         })
                                     }
                                     placeholder="Please specify"
@@ -272,10 +265,10 @@ const EditDemographics = ({
                     <Col>
                         <Form.Group>
                             <Form.Control
-                                value={accountInfo.occupation}
+                                value={accountInformation.occupation}
                                 onChange={(event) =>
                                     setAccountInfo({
-                                        ...accountInfo,
+                                        ...accountInformation,
                                         occupation: event.target.value,
                                     })
                                 }
@@ -294,23 +287,24 @@ const EditDemographics = ({
                             <Form.Row>
                                 <Col>
                                     <Form.Control
-                                        value={accountInfo.licenseType}
+                                        value={accountInformation.license_type}
                                         onChange={(event) =>
                                             setAccountInfo({
-                                                ...accountInfo,
-                                                licenseType: event.target.value,
+                                                ...accountInformation,
+                                                license_type:
+                                                    event.target.value,
                                             })
                                         }
                                         placeholder="License Type (optional)"
                                     />
                                 </Col>
-                                {accountInfo.licenseType && (
+                                {accountInformation.license_type && (
                                     <Col>
                                         <Form.Control
-                                            value={accountInfo.license}
+                                            value={accountInformation.license}
                                             onChange={(event) =>
                                                 setAccountInfo({
-                                                    ...accountInfo,
+                                                    ...accountInformation,
                                                     license: event.target.value,
                                                 })
                                             }

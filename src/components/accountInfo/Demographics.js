@@ -80,16 +80,22 @@ const Demographics = ({ accountInfo }) => {
                     </Col>
                     <Col>{accountInfo.degree_focus}</Col>
                 </Row>
+
                 <Row>
                     <Col className="demographic-field">Occupation</Col>
                     <Col>{accountInfo.occupation}</Col>
                 </Row>
-                <Row>
-                    <Col className="demographic-field">
-                        {accountInfo.license}
-                    </Col>
-                    <Col></Col>
-                </Row>
+                {accountInfo.license && (
+                    <Row>
+                        <Col className="demographic-field">License Type</Col>
+                        <Col>
+                            <div>
+                                {accountInfo.license_type} :{" "}
+                                {accountInfo.license}
+                            </div>
+                        </Col>
+                    </Row>
+                )}
             </div>
         </Styles>
     );

@@ -52,7 +52,6 @@ const AccountInfo = (props) => {
     const { getSession } = useContext(AccountContext);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [edit, setEdit] = useState(false);
-    const [test, setTest] = useState(1);
 
     const [toasterOpened, setToasterOpened] = useState(false);
     const [updateSuccess, setUpdateSuccess] = useState(false);
@@ -104,7 +103,6 @@ const AccountInfo = (props) => {
                         </Link>
                         <div className="title">Account</div>
                     </div>
-                    <div>{test}</div>
                     {edit ? (
                         <div>
                             <IconButton
@@ -129,6 +127,7 @@ const AccountInfo = (props) => {
                 <div className="subheader">Demographic Info</div>
                 {edit ? (
                     <EditDemographics
+                        accountInfo={accountInfo}
                         updateAccountInfo={updateAccountInfo}
                         updateEditSuccess={updateEditSuccess}
                         openToaster={openToaster}
