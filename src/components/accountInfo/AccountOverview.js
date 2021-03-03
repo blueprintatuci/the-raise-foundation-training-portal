@@ -48,22 +48,32 @@ const Styles = styled.div`
     }
 `;
 
-const AccountOverview = () => {
+const AccountOverview = ({ accountInfo }) => {
+    console.log(accountInfo);
     return (
         <Styles>
             <div className="overview-container">
-                <Avatar className="initials-avatar">KH</Avatar>
+                <Avatar className="initials-avatar">
+                    <div>
+                        {accountInfo.first_name[0]}
+                        {accountInfo.last_name[0]}
+                    </div>
+                </Avatar>
                 <div className="overview-info">
-                    <div className="fullname">Kevin Huynh</div>
+                    <div className="fullname">
+                        {accountInfo.first_name} {accountInfo.last_name}
+                    </div>
                     <div className="joined">joined January 2021</div>
                     <Row>
                         <Col>
                             <div>Email</div>
-                            <div className="email">kevinhuynh914@gmail.com</div>
+                            <div className="email">{accountInfo.email}</div>
                         </Col>
                         <Col>
                             <div>Password</div>
-                            <div>***********</div>
+                            <div>
+                                <b>COMPONENT</b>
+                            </div>
                         </Col>
                     </Row>
                 </div>

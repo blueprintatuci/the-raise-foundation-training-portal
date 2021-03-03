@@ -280,7 +280,7 @@ const Register = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setPhone("+1" + phone);
+        if (phone !== "") setPhone("+1" + phone);
         userPool.signUp(email, password, attributeList, null, (err, data) => {
             if (err) {
                 console.error(err);
@@ -311,15 +311,13 @@ const Register = () => {
                             <div className="form-success-title">
                                 You're Set!
                             </div>
-                            <Form.Row>
-                                <GradientButton
-                                    block
-                                    text="Go to Login"
-                                    onClick={() => {
-                                        history.push("/login");
-                                    }}
-                                />
-                            </Form.Row>
+                            <GradientButton
+                                block
+                                text="Go to Login"
+                                onClick={() => {
+                                    history.push("/login");
+                                }}
+                            />
                             <div className="pinwheel-wrapper">
                                 <img
                                     className="pinwheel"
@@ -378,9 +376,9 @@ const Register = () => {
                                 <Form.Group>
                                     <Form.Control
                                         value={phone}
-                                        onChange={(event) =>
-                                            setPhone(event.target.value)
-                                        }
+                                        onChange={(event) => {
+                                            setPhone(event.target.value);
+                                        }}
                                         placeholder="Phone"
                                     />
                                 </Form.Group>

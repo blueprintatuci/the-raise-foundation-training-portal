@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import AccountOverview from "../components/accountInfo/AccountOverview";
 import Demographics from "../components/accountInfo/Demographics";
@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import { AccountContext } from "../components/auth/Accounts";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-
+import UserAPI from "../api/User";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
@@ -52,6 +52,8 @@ const AccountInfo = () => {
     const { getSession } = useContext(AccountContext);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [edit, setEdit] = useState(false);
+    const [userId, setUserId] = useState("");
+    const [jwtToken, setJwtToken] = useState("");
 
     const [toasterOpened, setToasterOpened] = useState(false);
     const [updateSuccess, setUpdateSuccess] = useState(false);
@@ -80,23 +82,47 @@ const AccountInfo = () => {
     const updateAccountInfo = (ai) => {
         setAccountInfo(ai);
     };
+    getSession()
+        .then((res) => {
+            setIsLoggedIn(true);
+            setUserId(res.accessToken.payload.username);
+            setJwtToken(res.accessToken.jwtToken);
 
-    getSession().then((test) => {
-        setIsLoggedIn(true);
-
-        console.log(test);
-    });
-
-    // getSession()
-    //     .then((res) => {
-    //         setIsLoggedIn(true);
-    //         console.log("test: ", res);
-    //         setUserId(res.accessToken.payload.username);
-    //         setSession(res);
-    //     })
-    //     .catch((err) => {
-    //         console.error(err);
-    //     });
+            console.log(userId);
+            console.log(jwtToken);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+    useEffect(() => {
+        UserAPI.getUserById(userId, jwtToken)
+            .then((res) => {
+                if (res.status === 200) {
+                    let data = res.data.Items[0];
+                    let formattedData = {};
+                    for (const attr in data) {
+                        if (
+                            attr === "first_name" ||
+                            attr === "last_name" ||
+                            attr === "city" ||
+                            attr === "state" ||
+                            attr === "phone_number" ||
+                            attr === "degree_level" ||
+                            attr === "degree_focus" ||
+                            attr === "occupation" ||
+                            attr === "license_type" ||
+                            attr === "license" ||
+                            attr === "email"
+                        ) {
+                            formattedData[attr] = data[attr].S;
+                        }
+                    }
+                    // console.log(formattedData);
+                    setAccountInfo(formattedData);
+                }
+            })
+            .catch();
+    }, [jwtToken]);
 
     const toggleEditDemographics = () => {
         setEdit(!edit);
@@ -132,7 +158,7 @@ const AccountInfo = () => {
                         </div>
                     )}
                 </div>
-                <AccountOverview />
+                <AccountOverview accountInfo={accountInfo} />
                 <div className="subheader">Demographic Info</div>
                 {edit ? (
                     <EditDemographics
