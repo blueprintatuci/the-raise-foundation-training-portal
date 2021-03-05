@@ -170,7 +170,7 @@ const MainNavbar = (props) => {
                 <Navbar>
                     <div className="nav-item-container">
                         <div style={{ display: "flex" }}>
-                            <NavItem name="About" to="/about"></NavItem>
+                            <NavItem name="About" to="/"></NavItem>
                             <NavItem name="Videos" to="/videos"></NavItem>
                         </div>
 

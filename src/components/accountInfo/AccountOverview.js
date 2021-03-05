@@ -13,7 +13,6 @@ const Styles = styled.div`
         padding: 15px;
         display: flex;
         align-items: center;
-        // justify-content: center;
         max-width: 550px;
     }
     .initials-avatar {
@@ -39,12 +38,20 @@ const Styles = styled.div`
     }
     .joined {
         font-size: 0.9rem;
-        margin-bottom: 1rem;
         font-style: italic;
+        margin-bottom: 1rem;
     }
 
     .email {
         font-size: 0.8rem;
+        // padding-top: 2px;
+    }
+
+    .reset-password {
+        background: #60bcc5;
+        border: none;
+        font-size: 0.8rem;
+        margin-bottom: 5px;
     }
 `;
 
@@ -65,6 +72,7 @@ const AccountOverview = ({ accountInfo }) => {
                         {accountInfo.first_name} {accountInfo.last_name}
                     </div>
                     <div className="joined">joined January 2021</div>
+
                     <Row>
                         <Col>
                             <div>Email</div>
@@ -73,7 +81,9 @@ const AccountOverview = ({ accountInfo }) => {
                         <Col>
                             <div>Password</div>
                             <div>
-                                <b>COMPONENT</b>
+                                <Button className="reset-password">
+                                    Reset Password
+                                </Button>
                             </div>
                         </Col>
                     </Row>

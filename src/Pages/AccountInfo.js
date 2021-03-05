@@ -6,7 +6,6 @@ import EditDemographics from "../components/accountInfo/EditDemographics";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
-import { AccountContext } from "../components/auth/Accounts";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import UserAPI from "../api/User";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -19,12 +18,11 @@ const Styles = styled.div`
         margin: 30px;
         margin-bottom: 10px;
         display: flex;
-        justify-content: space-between;
     }
     .subheader {
-        margin-top: 3rem;
-        margin: 30px;
-        margin-bottom: 10px;
+        padding-top: 3rem;
+        padding: 30px;
+        padding-bottom: 10px;
         font-weight: 700;
         font-size: 1.2rem;
     }
@@ -36,7 +34,7 @@ const Styles = styled.div`
         color: rgb(1, 131, 225);
         border: none;
         outline: none;
-        font-size: 2.5rem;
+        font-size: 1.7rem;
     }
 
     .back-button {
@@ -45,6 +43,17 @@ const Styles = styled.div`
     .back-button:hover {
         text-decoration: none;
         color: rgb(1, 131, 190);
+    }
+
+    .demographics-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 3rem;
+        padding: 30px;
+        padding-bottom: 10px;
+        font-weight: 700;
+        font-size: 1.2rem;
     }
 `;
 
@@ -55,25 +64,12 @@ const AccountInfo = ({ jwtToken, userId }) => {
     const [updateSuccess, setUpdateSuccess] = useState(false);
 
     const [accountInfo, setAccountInfo] = useState({});
-
-    // const fetchSession = () => {
-    //     getSession()
-    //         .then((res) => {
-    //             setIsLoggedIn(true);
-    //             setUserId(res.accessToken.payload.username);
-    //             setJwtToken(res.accessToken.jwtToken);
-    //             console.log("Session: ", res);
-    //         })
-    //         .catch((err) => {
-    //             console.error(err);
-    //         });
-    // };
+    const [updatedAccountInfo, setUpdatedAccountInfo] = useState({});
 
     useEffect(() => {
         UserAPI.getUserById(userId, jwtToken)
             .then((res) => {
                 if (res.status === 200) {
-                    console.log(res.data);
                     let data = res.data.users[0];
                     console.log("Data: ", data);
 
@@ -83,7 +79,7 @@ const AccountInfo = ({ jwtToken, userId }) => {
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
+    }, [updatedAccountInfo]);
 
     const openToaster = () => {
         setToasterOpened(true);
@@ -98,7 +94,7 @@ const AccountInfo = ({ jwtToken, userId }) => {
     };
 
     const updateAccountInfo = (ai) => {
-        setAccountInfo(ai);
+        setUpdatedAccountInfo(ai);
     };
 
     const toggleEditDemographics = () => {
@@ -114,6 +110,10 @@ const AccountInfo = ({ jwtToken, userId }) => {
                     </Link>
                     <div className="title">Account</div>
                 </div>
+            </div>
+            <AccountOverview accountInfo={accountInfo} />
+            <div className="demographics-header">
+                <div className="">Demographic Info</div>
                 {edit ? (
                     <div>
                         <IconButton
@@ -134,10 +134,9 @@ const AccountInfo = ({ jwtToken, userId }) => {
                     </div>
                 )}
             </div>
-            <AccountOverview accountInfo={accountInfo} />
-            <div className="subheader">Demographic Info</div>
             {edit ? (
                 <EditDemographics
+                    jwtToken={jwtToken}
                     accountInfo={accountInfo}
                     updateAccountInfo={updateAccountInfo}
                     updateEditSuccess={updateEditSuccess}

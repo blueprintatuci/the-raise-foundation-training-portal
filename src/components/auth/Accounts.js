@@ -6,25 +6,6 @@ const AccountContext = createContext();
 
 // let userSession = {};
 
-const getSession = async () => {
-    await new Promise((resolve, reject) => {
-        const user = Pool.getCurrentUser();
-        if (user) {
-            user.getSession((err, session) => {
-                if (err) {
-                    reject();
-                } else {
-                    resolve(session);
-                    // userSession = session;
-                }
-            });
-        } else {
-            console.log("no user");
-            reject();
-        }
-    });
-};
-
 const Account = (props) => {
     const getSession = async () => {
         return new Promise((resolve, reject) => {
@@ -87,4 +68,4 @@ const Account = (props) => {
     );
 };
 
-export { Account, AccountContext, getSession };
+export { Account, AccountContext };

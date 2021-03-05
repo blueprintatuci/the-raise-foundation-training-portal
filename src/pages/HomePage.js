@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
@@ -235,13 +235,15 @@ const HomePage = () => {
     const { getSession } = useContext(AccountContext);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    getSession()
-        .then((res) => {
-            setIsLoggedIn(true);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+    useEffect(() => {
+        getSession()
+            .then((res) => {
+                setIsLoggedIn(true);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }, []);
 
     return (
         <Styles>
@@ -255,6 +257,7 @@ const HomePage = () => {
                     </p>
                     <div className="ace-header-button-container">
                         <GradientButton
+                            block
                             text="Get Started"
                             onClick={() => history.push("/signup")}
                         />

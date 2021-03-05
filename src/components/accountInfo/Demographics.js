@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import User from "../../api/User";
+import { formatMs } from "@material-ui/core";
 
 const Styles = styled.div`
     .demographic-container {
@@ -57,6 +58,34 @@ const Styles = styled.div`
 `;
 
 const Demographics = ({ accountInfo }) => {
+    const formatDegree = (degree) => {
+        switch (degree) {
+            case "associate":
+                return "Associate Degree (A.A. or A.S.)";
+            case "bachelor":
+                return "Bachelor's Degree (B.A. or B.S.)";
+            case "master":
+                return "Master's Degree (M.A. or M.S.)";
+            case "md":
+                return "MD";
+            case "jd":
+                return "JD";
+            case "phd":
+                return "Ph.D.";
+            default:
+                if (degree)
+                    degree = degree.replace(/\b\w/g, (l) => l.toUpperCase());
+                return degree;
+        }
+    };
+    const formatFocus = (degree) => {
+        if (degree) {
+            degree = degree
+                .replace("_", " ")
+                .replace(/\b\w/g, (l) => l.toUpperCase());
+        }
+        return degree;
+    };
     return (
         <Styles>
             <div className="demographic-container">
@@ -73,13 +102,13 @@ const Demographics = ({ accountInfo }) => {
                     <Col className="demographic-field">
                         Level of Degree Attained
                     </Col>
-                    <Col>{accountInfo.degree_level}</Col>
+                    <Col>{formatDegree(accountInfo.degree_level)}</Col>
                 </Row>
                 <Row>
                     <Col className="demographic-field">
                         Degree Area of Focus
                     </Col>
-                    <Col>{accountInfo.degree_focus}</Col>
+                    <Col>{formatFocus(accountInfo.degree_focus)}</Col>
                 </Row>
 
                 <Row>

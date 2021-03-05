@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import GradientButton from "../standard/GradientButton";
+import UserAPI from "../../api/User";
 
 const Styles = styled.div`
     .demographic-container {
@@ -62,6 +63,7 @@ const Styles = styled.div`
 `;
 
 const EditDemographics = ({
+    jwtToken,
     accountInfo,
     updateAccountInfo,
     updateEditSuccess,
@@ -71,12 +73,26 @@ const EditDemographics = ({
     const [accountInformation, setAccountInfo] = useState(accountInfo);
 
     const saveChanges = () => {
-        // Note: add update endpoint here
-        // history.push("/account");
-        updateAccountInfo(accountInformation); // test function
+        try {
+            UserAPI.updateUserById(
+                accountInformation.id,
+                jwtToken,
+                accountInformation
+            )
+                .then((res) => {
+                    if (res.status === 200) {
+                        updateAccountInfo(accountInformation);
+                        updateEditSuccess(true);
+                    } else {
+                        throw res;
+                    }
+                })
+                .error();
+        } catch (e) {
+            updateEditSuccess(false);
+        }
         toggleEdit();
         openToaster();
-        updateEditSuccess(true);
     };
 
     return (
@@ -190,9 +206,6 @@ const EditDemographics = ({
                                     })
                                 }
                             >
-                                <option value="">
-                                    Level of Degree Attained
-                                </option>
                                 <option value="associate">
                                     Associate Degree (A.A. or A.S.)
                                 </option>
@@ -205,7 +218,7 @@ const EditDemographics = ({
                                 <option value="md">MD</option>
                                 <option value="jd">JD</option>
                                 <option value="phd">Ph.D.</option>
-                                <option value="other">Other</option>
+                                <option value="none">None</option>
                             </Form.Control>
                         </Form.Group>
                     </Col>

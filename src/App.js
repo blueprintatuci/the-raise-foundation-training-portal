@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import HomePage from "./pages/HomePage.js";
 import MainNavbar from "./components/standard/Navigation.js";
 import Footer from "./components/standard/Footer";
@@ -26,7 +26,6 @@ function App() {
                         <Route exact path="/" component={HomePage} />
                         <Route exact path="/login" component={Login} />
                         <Route path="/signup" component={SignUp} />
-                        {/* <Route exact path="/account" component={AccountInfo} /> */}
                         <ProtectedRoute
                             exact
                             path="/account"

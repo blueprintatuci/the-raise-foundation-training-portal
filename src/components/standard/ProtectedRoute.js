@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, useHistory } from "react-router-dom";
 import { AccountContext } from "../auth/Accounts";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
     const { getSession } = useContext(AccountContext);
-    const [authTokens, setAuthTokens] = useState({});
+    const [authTokens, setAuthTokens] = useState();
 
     useEffect(() => {
         getSession()
             .then((res) => {
+                console.log(res);
                 let auth_tokens = {
                     authenticated: true,
                     jwt: res.accessToken.jwtToken,
@@ -21,8 +22,8 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             });
     }, []);
 
-    if (authTokens.authenticated) {
-        return (
+    if (authTokens) {
+        return authTokens.authenticated ? (
             <Route
                 {...rest}
                 render={(props) => {
@@ -35,10 +36,12 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
                     );
                 }}
             ></Route>
+        ) : (
+            <Redirect to="login" />
         );
-    } else {
-        return <div></div>;
     }
+
+    return <div></div>;
 };
 
 export default ProtectedRoute;

@@ -12,6 +12,20 @@ async function getUserById(userId, token) {
     return await Socket.GET(props);
 }
 
+async function updateUserById(userId, token, payload) {
+    const props = {
+        baseURL: "https://x5t2xc1swj.execute-api.us-east-2.amazonaws.com/devel", // Base URL
+        url: `/user/update/${userId}`, // Path of URL
+        headers: {
+            Authorization: token,
+        },
+        data: payload,
+    };
+
+    return await Socket.PUT(props);
+}
+
 export default {
     getUserById,
+    updateUserById,
 };
