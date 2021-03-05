@@ -312,7 +312,7 @@ const Register = () => {
                                 You're Set!
                             </div>
                             <GradientButton
-                                block
+                                block="true"
                                 text="Go to Login"
                                 onClick={() => {
                                     history.push("/login");
@@ -413,7 +413,7 @@ const Register = () => {
                                     <Col>
                                         <Button
                                             className="back-button"
-                                            block
+                                            block="true"
                                             onClick={handleHistoryBack}
                                         >
                                             Back
@@ -421,7 +421,7 @@ const Register = () => {
                                     </Col>
                                     <Col>
                                         <GradientButton
-                                            block
+                                            block="true"
                                             text="Next"
                                             onClick={nextStep}
                                         />
@@ -537,14 +537,14 @@ const Register = () => {
                                         <Button
                                             className="back-button"
                                             onClick={previousStep}
-                                            block
+                                            block="true"
                                         >
                                             Back
                                         </Button>
                                     </Col>
                                     <Col>
                                         <GradientButton
-                                            block
+                                            block="true"
                                             text="Next"
                                             onClick={nextStep}
                                         />
@@ -701,14 +701,14 @@ const Register = () => {
                                         <Button
                                             className="back-button"
                                             onClick={previousStep}
-                                            block
+                                            block="true"
                                         >
                                             Back
                                         </Button>
                                     </Col>
                                     <Col>
                                         <GradientButton
-                                            block
+                                            block="true"
                                             text="Submit"
                                             onClick={handleSubmit}
                                         />
@@ -750,7 +750,7 @@ const Register = () => {
                                 <Form.Row>
                                     <Col>
                                         <GradientButton
-                                            block
+                                            block="true"
                                             text="Submit"
                                             onClick={onVerify}
                                         />

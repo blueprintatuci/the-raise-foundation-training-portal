@@ -48,24 +48,42 @@ const Styles = styled.div`
     }
 `;
 
-const AccountInfo = () => {
-    const { getSession } = useContext(AccountContext);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+const AccountInfo = ({ jwtToken, userId }) => {
     const [edit, setEdit] = useState(false);
-    const [userId, setUserId] = useState("");
-    const [jwtToken, setJwtToken] = useState("");
 
     const [toasterOpened, setToasterOpened] = useState(false);
     const [updateSuccess, setUpdateSuccess] = useState(false);
 
-    const [accountInfo, setAccountInfo] = useState({
-        city: "Irvine",
-        state: "CA",
-        degree_level: "Bachelor's",
-        degree_focus: "Computer Science",
-        occupation: "Software Engineer",
-        license: "",
-    });
+    const [accountInfo, setAccountInfo] = useState({});
+
+    // const fetchSession = () => {
+    //     getSession()
+    //         .then((res) => {
+    //             setIsLoggedIn(true);
+    //             setUserId(res.accessToken.payload.username);
+    //             setJwtToken(res.accessToken.jwtToken);
+    //             console.log("Session: ", res);
+    //         })
+    //         .catch((err) => {
+    //             console.error(err);
+    //         });
+    // };
+
+    useEffect(() => {
+        UserAPI.getUserById(userId, jwtToken)
+            .then((res) => {
+                if (res.status === 200) {
+                    console.log(res.data);
+                    let data = res.data.users[0];
+                    console.log("Data: ", data);
+
+                    setAccountInfo(data);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
     const openToaster = () => {
         setToasterOpened(true);
@@ -82,130 +100,85 @@ const AccountInfo = () => {
     const updateAccountInfo = (ai) => {
         setAccountInfo(ai);
     };
-    getSession()
-        .then((res) => {
-            setIsLoggedIn(true);
-            setUserId(res.accessToken.payload.username);
-            setJwtToken(res.accessToken.jwtToken);
-
-            console.log(userId);
-            console.log(jwtToken);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
-    useEffect(() => {
-        UserAPI.getUserById(userId, jwtToken)
-            .then((res) => {
-                if (res.status === 200) {
-                    let data = res.data.Items[0];
-                    let formattedData = {};
-                    for (const attr in data) {
-                        if (
-                            attr === "first_name" ||
-                            attr === "last_name" ||
-                            attr === "city" ||
-                            attr === "state" ||
-                            attr === "phone_number" ||
-                            attr === "degree_level" ||
-                            attr === "degree_focus" ||
-                            attr === "occupation" ||
-                            attr === "license_type" ||
-                            attr === "license" ||
-                            attr === "email"
-                        ) {
-                            formattedData[attr] = data[attr].S;
-                        }
-                    }
-                    // console.log(formattedData);
-                    setAccountInfo(formattedData);
-                }
-            })
-            .catch();
-    }, [jwtToken]);
 
     const toggleEditDemographics = () => {
         setEdit(!edit);
     };
 
-    if (isLoggedIn) {
-        return (
-            <Styles>
-                <div className="header">
-                    <div>
-                        <Link className="back-button" to="/videos" block>
-                            Back to Video Library
-                        </Link>
-                        <div className="title">Account</div>
-                    </div>
-                    {edit ? (
-                        <div>
-                            <IconButton
-                                className="edit-button"
-                                onClick={toggleEditDemographics}
-                            >
-                                <HighlightOffIcon fontSize="inherit" />
-                            </IconButton>
-                        </div>
-                    ) : (
-                        <div>
-                            <IconButton
-                                className="edit-button"
-                                onClick={toggleEditDemographics}
-                            >
-                                <EditIcon fontSize="inherit" />
-                            </IconButton>
-                        </div>
-                    )}
+    return (
+        <Styles>
+            <div className="header">
+                <div>
+                    <Link className="back-button" to="/videos" block>
+                        Back to Video Library
+                    </Link>
+                    <div className="title">Account</div>
                 </div>
-                <AccountOverview accountInfo={accountInfo} />
-                <div className="subheader">Demographic Info</div>
                 {edit ? (
-                    <EditDemographics
-                        accountInfo={accountInfo}
-                        updateAccountInfo={updateAccountInfo}
-                        updateEditSuccess={updateEditSuccess}
-                        openToaster={openToaster}
-                        toggleEdit={toggleEditDemographics}
-                    />
+                    <div>
+                        <IconButton
+                            className="edit-button"
+                            onClick={toggleEditDemographics}
+                        >
+                            <HighlightOffIcon fontSize="inherit" />
+                        </IconButton>
+                    </div>
                 ) : (
-                    <Demographics accountInfo={accountInfo} />
+                    <div>
+                        <IconButton
+                            className="edit-button"
+                            onClick={toggleEditDemographics}
+                        >
+                            <EditIcon fontSize="inherit" />
+                        </IconButton>
+                    </div>
                 )}
+            </div>
+            <AccountOverview accountInfo={accountInfo} />
+            <div className="subheader">Demographic Info</div>
+            {edit ? (
+                <EditDemographics
+                    accountInfo={accountInfo}
+                    updateAccountInfo={updateAccountInfo}
+                    updateEditSuccess={updateEditSuccess}
+                    openToaster={openToaster}
+                    toggleEdit={toggleEditDemographics}
+                />
+            ) : (
+                <Demographics accountInfo={accountInfo} />
+            )}
 
-                <Snackbar
-                    open={toasterOpened}
-                    onClose={closeToaster}
-                    autoHideDuration={6000}
-                    anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                    }}
-                >
-                    {updateSuccess ? (
-                        <MuiAlert
-                            onClose={closeToaster}
-                            elevation={6}
-                            variant="filled"
-                            severity="success"
-                        >
-                            Successfully updated account information
-                        </MuiAlert>
-                    ) : (
-                        <MuiAlert
-                            onClose={closeToaster}
-                            elevation={6}
-                            variant="filled"
-                            severity="error"
-                        >
-                            Failed to update account information
-                        </MuiAlert>
-                    )}
-                </Snackbar>
-            </Styles>
-        );
-    } else {
-        return <div></div>;
-    }
+            <Snackbar
+                open={toasterOpened}
+                onClose={closeToaster}
+                autoHideDuration={6000}
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                }}
+            >
+                {updateSuccess ? (
+                    <MuiAlert
+                        onClose={closeToaster}
+                        elevation={6}
+                        variant="filled"
+                        severity="success"
+                    >
+                        Successfully updated account information
+                    </MuiAlert>
+                ) : (
+                    <MuiAlert
+                        onClose={closeToaster}
+                        elevation={6}
+                        variant="filled"
+                        severity="error"
+                    >
+                        Failed to update account information
+                    </MuiAlert>
+                )}
+            </Snackbar>
+        </Styles>
+    );
 };
 
 export default AccountInfo;

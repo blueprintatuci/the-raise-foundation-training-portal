@@ -49,15 +49,16 @@ const Styles = styled.div`
 `;
 
 const AccountOverview = ({ accountInfo }) => {
-    console.log(accountInfo);
     return (
         <Styles>
             <div className="overview-container">
                 <Avatar className="initials-avatar">
-                    <div>
-                        {accountInfo.first_name[0]}
-                        {accountInfo.last_name[0]}
-                    </div>
+                    {accountInfo.first_name && (
+                        <div>
+                            {accountInfo.first_name[0]}
+                            {accountInfo.last_name[0]}
+                        </div>
+                    )}
                 </Avatar>
                 <div className="overview-info">
                     <div className="fullname">

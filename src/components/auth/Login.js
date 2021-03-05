@@ -124,7 +124,7 @@ const Login = () => {
                             </Form.Group>
 
                             <GradientButton
-                                block
+                                block="true"
                                 text="Login"
                                 onClick={onSubmit}
                             />

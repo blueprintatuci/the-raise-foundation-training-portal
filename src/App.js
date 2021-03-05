@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import HomePage from "./pages/HomePage.js";
 import MainNavbar from "./components/standard/Navigation.js";
 import Footer from "./components/standard/Footer";
@@ -8,22 +8,14 @@ import AccountInfo from "./pages/AccountInfo";
 import Login from "./pages/Login";
 import "./App.css";
 import styled from "styled-components";
-import { Account, getSession } from "./components/auth/Accounts";
+import { Account } from "./components/auth/Accounts";
+import ProtectedRoute from "./components/standard/ProtectedRoute";
 
 const Styles = styled.div`
     min-height: 75vh;
 `;
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    getSession()
-        .then(() => {
-            setIsLoggedIn(true);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
-
     return (
         <Account>
             <Router>
@@ -34,7 +26,12 @@ function App() {
                         <Route exact path="/" component={HomePage} />
                         <Route exact path="/login" component={Login} />
                         <Route path="/signup" component={SignUp} />
-                        <Route exact path="/account" component={AccountInfo} />
+                        {/* <Route exact path="/account" component={AccountInfo} /> */}
+                        <ProtectedRoute
+                            exact
+                            path="/account"
+                            component={AccountInfo}
+                        />
                     </Switch>
                 </Styles>
                 <Footer />
