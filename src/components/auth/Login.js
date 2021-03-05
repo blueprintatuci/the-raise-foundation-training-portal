@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { AccountContext } from "./Accounts";
 import { Container, Form } from "react-bootstrap";
@@ -64,6 +64,9 @@ const Styles = styled.div`
 `;
 
 const Login = () => {
+    let myRef = useRef();
+    useEffect(() => myRef.current && myRef.current.focus());
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
@@ -72,11 +75,14 @@ const Login = () => {
     const onSubmit = (event) => {
         event.preventDefault();
         authenticate(email, password)
-            .then((data) => {
+            .then(() => {
                 setLoggedIn(true);
             })
-            .catch((err) => {});
+            .catch((err) => {
+                console.error(err);
+            });
     };
+
     if (loggedIn) {
         return <Redirect to="/"></Redirect>;
     }
@@ -84,7 +90,7 @@ const Login = () => {
     return (
         <Styles>
             <div>
-                <Container className="form-container">
+                <Container id="tester" className="form-container">
                     <div className="form-wrapper">
                         <Form>
                             <img
@@ -117,7 +123,11 @@ const Login = () => {
                                 />
                             </Form.Group>
 
-                            <GradientButton text="Login" onClick={onSubmit} />
+                            <GradientButton
+                                block
+                                text="Login"
+                                onClick={onSubmit}
+                            />
                             <div className="actions">
                                 <a href="/">Continue as Guest</a>
                                 <a href="/signup">Sign Up</a>

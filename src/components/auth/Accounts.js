@@ -4,6 +4,24 @@ import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 
 const AccountContext = createContext();
 
+const getSession = async () => {
+    await new Promise((resolve, reject) => {
+        const user = Pool.getCurrentUser();
+        if (user) {
+            user.getSession((err, session) => {
+                if (err) {
+                    reject();
+                } else {
+                    resolve(session);
+                }
+            });
+        } else {
+            console.log("no user");
+            reject();
+        }
+    });
+};
+
 const Account = (props) => {
     const getSession = async () => {
         await new Promise((resolve, reject) => {
@@ -33,7 +51,6 @@ const Account = (props) => {
 
             cognitoUser.authenticateUser(authDetails, {
                 onSuccess: (data) => {
-                    console.log(data);
                     resolve(data);
                 },
                 onFailure: (err) => {
@@ -66,4 +83,4 @@ const Account = (props) => {
     );
 };
 
-export { Account, AccountContext };
+export { Account, AccountContext, getSession };
