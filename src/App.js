@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import HomePage from "./pages/HomePage.js";
 import MainNavbar from "./components/standard/Navigation.js";
 import Footer from "./components/standard/Footer";
@@ -16,15 +16,29 @@ const Styles = styled.div`
 `;
 
 function App() {
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    const updateLoggedIn = () => {
+        setLoggedIn(!loggedIn);
+    };
     return (
         <Account>
             <Router>
                 <Styles>
-                    <MainNavbar />
+                    <MainNavbar loggedIn={loggedIn} />
 
                     <Switch>
                         <Route exact path="/" component={HomePage} />
-                        <Route exact path="/login" component={Login} />
+                        <Route
+                            exact
+                            path="/login"
+                            render={() => {
+                                return (
+                                    <Login updateLoggedIn={updateLoggedIn} />
+                                );
+                                // NOTE: Update login component to update this prop
+                            }}
+                        />
                         <Route path="/signup" component={SignUp} />
                         <ProtectedRoute
                             exact

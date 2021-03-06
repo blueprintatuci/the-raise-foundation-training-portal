@@ -73,24 +73,23 @@ const EditDemographics = ({
     const [accountInformation, setAccountInfo] = useState(accountInfo);
 
     const saveChanges = () => {
-        try {
-            UserAPI.updateUserById(
-                accountInformation.id,
-                jwtToken,
-                accountInformation
-            )
-                .then((res) => {
-                    if (res.status === 200) {
-                        updateAccountInfo(accountInformation);
-                        updateEditSuccess(true);
-                    } else {
-                        throw res;
-                    }
-                })
-                .error();
-        } catch (e) {
-            updateEditSuccess(false);
-        }
+        UserAPI.updateUserById(
+            accountInformation.id,
+            jwtToken,
+            accountInformation
+        )
+            .then((res) => {
+                if (res.status === 200) {
+                    updateAccountInfo(accountInformation);
+                    updateEditSuccess(true);
+                } else {
+                    updateEditSuccess(false);
+                }
+            })
+            .catch(() => {
+                updateEditSuccess(false);
+            });
+
         toggleEdit();
         openToaster();
     };

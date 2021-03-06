@@ -56,7 +56,7 @@ const Styles = styled.div`
     }
 `;
 
-const DropdownMenu = (props) => {
+const DropdownMenu = ({ isLoggedIn }) => {
     const { logout } = useContext(AccountContext);
 
     const onLogout = () => {
@@ -91,12 +91,11 @@ const DropdownMenu = (props) => {
         <Styles>
             <div className="dropdown">
                 <div className="menu">
-                    {props.isLoggedIn ? (
+                    {isLoggedIn ? (
                         <div>
                             <DropdownItem to="/account">
                                 My Account
                             </DropdownItem>
-                            <DropdownItem to="">Settings</DropdownItem>
                         </div>
                     ) : (
                         <DropdownItem to="/signup">Sign Up</DropdownItem>
@@ -109,7 +108,7 @@ const DropdownMenu = (props) => {
                             marginTop: "5px",
                         }}
                     ></div>
-                    {props.isLoggedIn ? (
+                    {isLoggedIn ? (
                         <DropdownItem onClick={onLogout}>Log out</DropdownItem>
                     ) : (
                         <DropdownItem to="login">Login</DropdownItem>

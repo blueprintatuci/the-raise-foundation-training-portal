@@ -56,6 +56,15 @@ const Styles = styled.div`
 `;
 
 const AccountOverview = ({ accountInfo }) => {
+    const formatDate = (date) => {
+        if (date) {
+            let fd = new Date(date);
+            return `${fd.toLocaleString("default", {
+                month: "long",
+            })} ${fd.getFullYear()}`;
+        }
+        return date;
+    };
     return (
         <Styles>
             <div className="overview-container">
@@ -71,7 +80,9 @@ const AccountOverview = ({ accountInfo }) => {
                     <div className="fullname">
                         {accountInfo.first_name} {accountInfo.last_name}
                     </div>
-                    <div className="joined">joined January 2021</div>
+                    <div className="joined">
+                        joined {formatDate(accountInfo.createdAt)}
+                    </div>
 
                     <Row>
                         <Col>

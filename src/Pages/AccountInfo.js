@@ -71,7 +71,6 @@ const AccountInfo = ({ jwtToken, userId }) => {
             .then((res) => {
                 if (res.status === 200) {
                     let data = res.data.users[0];
-                    console.log("Data: ", data);
 
                     setAccountInfo(data);
                 }
@@ -150,7 +149,7 @@ const AccountInfo = ({ jwtToken, userId }) => {
             <Snackbar
                 open={toasterOpened}
                 onClose={closeToaster}
-                autoHideDuration={6000}
+                autoHideDuration={2000}
                 anchorOrigin={{
                     vertical: "top",
                     horizontal: "right",

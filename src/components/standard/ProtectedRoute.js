@@ -9,7 +9,6 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     useEffect(() => {
         getSession()
             .then((res) => {
-                console.log(res);
                 let auth_tokens = {
                     authenticated: true,
                     jwt: res.accessToken.jwtToken,
