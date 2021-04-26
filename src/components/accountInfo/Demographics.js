@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import User from "../../api/User";
+import { formatMs } from "@material-ui/core";
 
 const Styles = styled.div`
     .demographic-container {

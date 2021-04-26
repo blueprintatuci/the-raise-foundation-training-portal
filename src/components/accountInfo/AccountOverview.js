@@ -13,7 +13,6 @@ const Styles = styled.div`
         padding: 15px;
         display: flex;
         align-items: center;
-        // justify-content: center;
         max-width: 550px;
     }
     .initials-avatar {
@@ -39,31 +38,64 @@ const Styles = styled.div`
     }
     .joined {
         font-size: 0.9rem;
-        margin-bottom: 1rem;
         font-style: italic;
+        margin-bottom: 1rem;
     }
 
     .email {
         font-size: 0.8rem;
+        // padding-top: 2px;
+    }
+
+    .reset-password {
+        background: #60bcc5;
+        border: none;
+        font-size: 0.8rem;
+        margin-bottom: 5px;
     }
 `;
 
-const AccountOverview = () => {
+const AccountOverview = ({ accountInfo }) => {
+    const formatDate = (date) => {
+        if (date) {
+            let fd = new Date(date);
+            return `${fd.toLocaleString("default", {
+                month: "long",
+            })} ${fd.getFullYear()}`;
+        }
+        return date;
+    };
     return (
         <Styles>
             <div className="overview-container">
-                <Avatar className="initials-avatar">KH</Avatar>
+                <Avatar className="initials-avatar">
+                    {accountInfo.first_name && (
+                        <div>
+                            {accountInfo.first_name[0]}
+                            {accountInfo.last_name[0]}
+                        </div>
+                    )}
+                </Avatar>
                 <div className="overview-info">
-                    <div className="fullname">Kevin Huynh</div>
-                    <div className="joined">joined January 2021</div>
+                    <div className="fullname">
+                        {accountInfo.first_name} {accountInfo.last_name}
+                    </div>
+                    <div className="joined">
+                        joined {formatDate(accountInfo.createdAt)}
+                    </div>
+
                     <Row>
                         <Col>
                             <div>Email</div>
-                            <div className="email">kevinhuynh914@gmail.com</div>
+                            <div className="email">{accountInfo.email}</div>
                         </Col>
                         <Col>
                             <div>Password</div>
-                            <div>***********</div>
+                            <div>
+                                <Button className="reset-password">
+                                    Reset Password
+                                </Button>
+                            </div>
                         </Col>
                     </Row>
                 </div>
