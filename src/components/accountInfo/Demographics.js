@@ -56,19 +56,38 @@ const Styles = styled.div`
     }
 `;
 
-const Demographics = ({ userId }) => {
-    const [accountInfo, setAcccountInfo] = useState({
-        city: "Irvine",
-        state: "California",
-        degree_level: "Bachelor's",
-        degree_focus: "Computer Science",
-        occupation: "Software Engineer",
-        license: "",
-    });
+const Demographics = ({ accountInfo }) => {
+    const getDegreeLevel = (degree) => {
+        let degreeLevels = {
+            associate: "Associate Degree (A.A. or A.S.)",
+            bachelor: "Bachelor's Degree (B.A. or B.S.)",
+            master: "Master's Degree (M.A. or M.S.)",
+            md: "MD",
+            jd: "JD",
+            phd: "Ph.D.",
+        };
+        if (!(degree in degreeLevels)) {
+            return "Other";
+        }
 
-    useEffect(() => {
-        User.getUserById(userId).then().catch();
-    }, []);
+        return degreeLevels[degree];
+    };
+
+    const getDegreeFocus = (focus) => {
+        let focuses = {
+            medical_doctor: "Medical Doctor",
+            medical_nursing: "Medical Nursing",
+            psychology: "Psychology",
+            counseling: "Counseling",
+            social_work: "Social Work",
+            education: "Education",
+        };
+        if (!(focus in focuses)) {
+            return "Other";
+        }
+
+        return focuses[focus];
+    };
 
     return (
         <Styles>
@@ -86,24 +105,30 @@ const Demographics = ({ userId }) => {
                     <Col className="demographic-field">
                         Level of Degree Attained
                     </Col>
-                    <Col>{accountInfo.degree_level}</Col>
+                    <Col>{getDegreeLevel(accountInfo.degree_level)}</Col>
                 </Row>
                 <Row>
                     <Col className="demographic-field">
                         Degree Area of Focus
                     </Col>
-                    <Col>{accountInfo.degree_focus}</Col>
+                    <Col>{getDegreeFocus(accountInfo.degree_focus)}</Col>
                 </Row>
+
                 <Row>
                     <Col className="demographic-field">Occupation</Col>
                     <Col>{accountInfo.occupation}</Col>
                 </Row>
-                <Row>
-                    <Col className="demographic-field">
-                        {accountInfo.license}
-                    </Col>
-                    <Col></Col>
-                </Row>
+                {accountInfo.license && (
+                    <Row>
+                        <Col className="demographic-field">License Type</Col>
+                        <Col>
+                            <div>
+                                {accountInfo.license_type} :{" "}
+                                {accountInfo.license}
+                            </div>
+                        </Col>
+                    </Row>
+                )}
             </div>
         </Styles>
     );

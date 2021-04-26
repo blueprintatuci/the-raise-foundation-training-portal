@@ -54,7 +54,6 @@ const Account = (props) => {
 
             cognitoUser.authenticateUser(authDetails, {
                 onSuccess: (data) => {
-                    console.log(data);
                     resolve(data);
                 },
                 onFailure: (err) => {
