@@ -5,6 +5,7 @@ import MainNavbar from "./components/standard/Navigation.js";
 import Footer from "./components/standard/Footer";
 import SignUp from "./pages/SignUp";
 import AccountInfo from "./pages/AccountInfo";
+import Quiz from "./pages/Quiz";
 import Login from "./pages/Login";
 import "./App.css";
 import styled from "styled-components";
@@ -41,6 +42,8 @@ function App() {
                                 return <AccountInfo isLoggedIn={isLoggedIn} />;
                             }}
                         />
+                        <Route path="/videos/:videoId/:quizId"></Route>
+                        <Route path="/tester" component={Quiz}></Route>
                     </Switch>
                 </Styles>
                 <Footer />
