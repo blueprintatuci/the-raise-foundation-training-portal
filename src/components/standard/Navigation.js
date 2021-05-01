@@ -8,7 +8,6 @@ import { AccountContext } from "../auth/Accounts";
 import Avatar from "@material-ui/core/Avatar";
 import { useLocation } from "react-router-dom";
 
-import { AccessAlarm, ThreeDRotation } from "@material-ui/icons";
 const Styles = styled.div`
     .navdiv {
         background: rgb(1, 131, 225);

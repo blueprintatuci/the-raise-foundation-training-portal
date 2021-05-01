@@ -36,28 +36,19 @@ const Styles = styled.div`
 `;
 
 const Quiz = (props) => {
-    const { getSession } = useContext(AccountContext);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // Test binding
+    const [userChoices, setUserChoices] = useState([
+        { questionId: 1, choiceId: 2 },
+    ]);
 
-    const [accountInfo, setAccountInfo] = useState({
-        city: "Irvine",
-        state: "CA",
-        degree_level: "Bachelor's",
-        degree_focus: "Computer Science",
-        occupation: "Software Engineer",
-        license: "",
-    });
-
-    getSession()
-        .then(() => {
-            setIsLoggedIn(true);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
-
+    const updateUserChoices = (choice) => {
+        // setUserChoices([...userChoices, choice]);
+    };
     return (
         <Styles>
+            {userChoices.map((uc) => {
+                return <div>{uc.questionId}</div>;
+            })}
             <div className="header">
                 <div>
                     <Link className="back-button" to="/videos" block>
@@ -71,7 +62,7 @@ const Quiz = (props) => {
             </div>
 
             <div className="questions">
-                <QuizQuestion />
+                <QuizQuestion updateUserChoices={updateUserChoices} />
             </div>
         </Styles>
     );

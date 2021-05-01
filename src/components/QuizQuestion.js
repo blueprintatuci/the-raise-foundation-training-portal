@@ -4,6 +4,9 @@ import styled from "styled-components";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
 const Styles = styled.div`
+    .question-container {
+        margin-bottom: 2rem;
+    }
     .question {
         font-size: 1.2rem;
     }
@@ -11,20 +14,23 @@ const Styles = styled.div`
     .choices-container {
         margin-top: 16px;
     }
-    .choice {
+    .choice-btn {
         padding: 16px 10px;
-        background: #f1f1f1;
+        background-color: var(--background-color);
         margin-bottom: 10px;
-        display: flex:
-        align-items: center
+        display: flex;
+        align-items: center;
+        border: none;
+        outline: none;
+        position: relative;
+        cursor: pointer;
+
+        --background-color: #f1f1f1;
+        --accent-color: #60bcc5;
     }
 
-    .choice:hover{
-        border: none
-    }
-
-    .choice span{
-        padding-left: 10px
+    .choice-btn span {
+        padding-left: 10px;
     }
 `;
 
@@ -35,11 +41,12 @@ const sampleChoices = [
     { id: "4", text: "Choice 4", isCorrect: false },
 ];
 
-const QuizQuestion = ({ number, question, choices }) => {
+const QuizQuestion = ({ updateUserChoices, number, questionObj, choices }) => {
     const [activeChoice, setActiveChoice] = useState();
 
     const selectChoice = (id) => {
         setActiveChoice(id);
+        updateUserChoices({ questionId: 1, choiceId: id });
     };
 
     const getRadioStyle = (id) => {
@@ -51,13 +58,14 @@ const QuizQuestion = ({ number, question, choices }) => {
 
     return (
         <Styles>
-            <div>
-                <div class="question">1. Sample Question?</div>
-                <div class="choices-container">
+            <div className="question-container">
+                <div className="question">1. Sample Question?</div>
+                <div className="choices-container">
                     {sampleChoices.map((choice) => {
                         return (
                             <div
-                                class="choice"
+                                className="choice-btn bg-slide"
+                                // style={getBackground(choice.id)}
                                 onClick={() => selectChoice(choice.id)}
                             >
                                 <FiberManualRecordIcon
