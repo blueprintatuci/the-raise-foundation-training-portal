@@ -8,38 +8,42 @@ import AccountInfo from "./pages/AccountInfo";
 import Login from "./pages/Login";
 import "./App.css";
 import styled from "styled-components";
-import { Account, getSession } from "./components/auth/Accounts";
+import { Account } from "./components/auth/Accounts";
+import ProtectedRoute from "./components/standard/ProtectedRoute";
 
 const Styles = styled.div`
     min-height: 75vh;
 `;
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    getSession()
-        .then(() => {
-            setIsLoggedIn(true);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+    const [loggedIn, setLoggedIn] = useState(false);
 
+    const updateLoggedIn = () => {
+        setLoggedIn(!loggedIn);
+    };
     return (
         <Account>
             <Router>
                 <Styles>
-                    <MainNavbar />
+                    <MainNavbar loggedIn={loggedIn} />
 
                     <Switch>
                         <Route exact path="/" component={HomePage} />
-                        <Route exact path="/login" component={Login} />
-                        <Route path="/signup" component={SignUp} />
                         <Route
                             exact
-                            path="/account"
+                            path="/login"
                             render={() => {
-                                return <AccountInfo isLoggedIn={isLoggedIn} />;
+                                return (
+                                    <Login updateLoggedIn={updateLoggedIn} />
+                                );
+                                // NOTE: Update login component to update this prop
                             }}
+                        />
+                        <Route path="/signup" component={SignUp} />
+                        <ProtectedRoute
+                            exact
+                            path="/account"
+                            component={AccountInfo}
                         />
                     </Switch>
                 </Styles>

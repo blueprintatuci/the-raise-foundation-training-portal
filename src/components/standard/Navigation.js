@@ -7,6 +7,7 @@ import MainLogo from "../../assets/logos/raise_logo_background_white.png";
 import { AccountContext } from "../auth/Accounts";
 import Avatar from "@material-ui/core/Avatar";
 import { useLocation } from "react-router-dom";
+import UserAPI from "../../api/User";
 const Styles = styled.div`
     .navdiv {
         background: rgb(1, 131, 225);
@@ -84,18 +85,46 @@ const Styles = styled.div`
     }
 `;
 
-const MainNavbar = (props) => {
+const MainNavbar = ({ loggedIn }) => {
     useLocation();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(loggedIn);
+    const [authTokens, setAuthTokens] = useState();
+    const [initials, setInitials] = useState("");
 
     const { getSession } = useContext(AccountContext);
-    getSession()
-        .then(() => {
-            setIsLoggedIn(true);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+    useEffect(() => {
+        getSession()
+            .then((res) => {
+                let auth_tokens = {
+                    authenticated: true,
+                    jwt: res.accessToken.jwtToken,
+                    userId: res.accessToken.payload.username,
+                };
+                setAuthTokens(auth_tokens);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }, [loggedIn]);
+
+    useEffect(() => {
+        if (authTokens) {
+            UserAPI.getUserById(authTokens.userId, authTokens.jwt)
+                .then((res) => {
+                    if (res.status === 200) {
+                        let data = res.data.users[0];
+
+                        // let initials = data.first_name[0] + data.last_name[0];
+                        let initials = "JS";
+                        setInitials(initials);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    }, [authTokens]);
+
     const Navbar = (props) => {
         return (
             <div>
@@ -170,11 +199,11 @@ const MainNavbar = (props) => {
                 <Navbar>
                     <div className="nav-item-container">
                         <div style={{ display: "flex" }}>
-                            <NavItem name="About" to="/about"></NavItem>
+                            <NavItem name="About" to="/"></NavItem>
                             <NavItem name="Videos" to="/videos"></NavItem>
                         </div>
 
-                        {isLoggedIn ? (
+                        {authTokens ? (
                             <NavItem
                                 icon={
                                     <Avatar className="initials-avatar">
@@ -183,13 +212,19 @@ const MainNavbar = (props) => {
                                 }
                             >
                                 <DropdownMenu
-                                    isLoggedIn={isLoggedIn}
+                                    isLoggedIn={
+                                        isLoggedIn ||
+                                        (authTokens && authTokens.authenticated)
+                                    }
                                 ></DropdownMenu>
                             </NavItem>
                         ) : (
                             <NavItem icon={<AccountIcon />}>
                                 <DropdownMenu
-                                    isLoggedIn={isLoggedIn}
+                                    isLoggedIn={
+                                        isLoggedIn ||
+                                        (authTokens && authTokens.authenticated)
+                                    }
                                 ></DropdownMenu>
                             </NavItem>
                         )}

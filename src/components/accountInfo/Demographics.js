@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
+import User from "../../api/User";
+import { formatMs } from "@material-ui/core";
 
 const Styles = styled.div`
     .demographic-container {
@@ -56,6 +58,38 @@ const Styles = styled.div`
 `;
 
 const Demographics = ({ accountInfo }) => {
+    const getDegreeLevel = (degree) => {
+        let degreeLevels = {
+            associate: "Associate Degree (A.A. or A.S.)",
+            bachelor: "Bachelor's Degree (B.A. or B.S.)",
+            master: "Master's Degree (M.A. or M.S.)",
+            md: "MD",
+            jd: "JD",
+            phd: "Ph.D.",
+        };
+        if (!(degree in degreeLevels)) {
+            return "Other";
+        }
+
+        return degreeLevels[degree];
+    };
+
+    const getDegreeFocus = (focus) => {
+        let focuses = {
+            medical_doctor: "Medical Doctor",
+            medical_nursing: "Medical Nursing",
+            psychology: "Psychology",
+            counseling: "Counseling",
+            social_work: "Social Work",
+            education: "Education",
+        };
+        if (!(focus in focuses)) {
+            return "Other";
+        }
+
+        return focuses[focus];
+    };
+
     return (
         <Styles>
             <div className="demographic-container">
@@ -72,13 +106,13 @@ const Demographics = ({ accountInfo }) => {
                     <Col className="demographic-field">
                         Level of Degree Attained
                     </Col>
-                    <Col>{accountInfo.degree_level}</Col>
+                    <Col>{getDegreeLevel(accountInfo.degree_level)}</Col>
                 </Row>
                 <Row>
                     <Col className="demographic-field">
                         Degree Area of Focus
                     </Col>
-                    <Col>{accountInfo.degree_focus}</Col>
+                    <Col>{getDegreeFocus(accountInfo.degree_focus)}</Col>
                 </Row>
 
                 <Row>
