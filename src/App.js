@@ -10,7 +10,8 @@ import "./App.css";
 import styled from "styled-components";
 import { Account } from "./components/auth/Accounts";
 import ProtectedRoute from "./components/standard/ProtectedRoute";
-import Videos from "./pages/Videos.js";
+import Videos from "./pages/Videos";
+import Video from "./pages/Video";
 
 const Styles = styled.div`
     min-height: 75vh;
@@ -47,6 +48,7 @@ function App() {
                             component={AccountInfo}
                         />
                         <Route path="/videos" component={Videos} />
+                        <Route path="/video/:videoId" component={Video} />
                     </Switch>
                 </Styles>
                 <Footer />
