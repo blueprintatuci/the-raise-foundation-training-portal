@@ -9,41 +9,51 @@ import Quiz from "./pages/Quiz";
 import Login from "./pages/Login";
 import "./App.css";
 import styled from "styled-components";
-import { Account, getSession } from "./components/auth/Accounts";
+import { Account } from "./components/auth/Accounts";
+import ProtectedRoute from "./components/standard/ProtectedRoute";
+import Videos from "./pages/Videos";
+import Video from "./pages/Video";
 
 const Styles = styled.div`
     min-height: 75vh;
 `;
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    getSession()
-        .then(() => {
-            setIsLoggedIn(true);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+    const [loggedIn, setLoggedIn] = useState(false);
 
+    const updateLoggedIn = () => {
+        setLoggedIn(!loggedIn);
+    };
     return (
         <Account>
             <Router>
                 <Styles>
-                    <MainNavbar />
+                    <MainNavbar loggedIn={loggedIn} />
 
                     <Switch>
                         <Route exact path="/" component={HomePage} />
-                        <Route exact path="/login" component={Login} />
-                        <Route path="/signup" component={SignUp} />
                         <Route
                             exact
-                            path="/account"
+                            path="/login"
                             render={() => {
-                                return <AccountInfo isLoggedIn={isLoggedIn} />;
+                                return (
+                                    <Login updateLoggedIn={updateLoggedIn} />
+                                );
+                                // NOTE: Update login component to update this prop
                             }}
                         />
-                        <Route path="/videos/:videoId/:quizId"></Route>
+
                         <Route path="/tester" component={Quiz}></Route>
+                        <Route path="/signup" component={SignUp} />
+                        <ProtectedRoute
+                            exact
+                            path="/account"
+                            component={AccountInfo}
+                        />
+                        <Route path="/videos" component={Videos} />
+                        <Route path="/video/:videoId" component={Video} />
+
+                        <Route path="/videos/:videoId/:quizId"></Route>
                     </Switch>
                 </Styles>
                 <Footer />
