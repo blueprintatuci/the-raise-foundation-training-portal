@@ -5,7 +5,7 @@ import VideoCard from "../components/videos/VideoCard";
 import lockIcon from "../assets/icons/lock.png";
 //background: #f1f1f1;
 const Styles = styled.div`
-    font-family: 'Raleway';
+    font-family: "Raleway";
 
     .video-library-header {
         display: flex;
@@ -25,7 +25,7 @@ const Styles = styled.div`
     }
 
     button {
-        background-color: #60BCC5;
+        background-color: #60bcc5;
         color: #fff;
         border: none;
 
@@ -52,7 +52,7 @@ const Styles = styled.div`
     }
 
     button:disabled {
-        background-color: #EAEAEA;
+        background-color: #eaeaea;
         color: #000;
     }
 
@@ -71,38 +71,41 @@ const Videos = () => {
     const userName = "Chase";
     const videos = [
         {
-            title: "Recognizing the Nature and Extent of Prejudice", 
-            thumbnail: "https://img.youtube.com/vi/21X5lGlDOfg/maxresdefault.jpg",
+            title: "Recognizing the Nature and Extent of Prejudice",
+            thumbnail:
+                "https://img.youtube.com/vi/21X5lGlDOfg/maxresdefault.jpg",
             author: "Dr. Gerardo Canul",
             length: "60m",
             isComplete: true,
         },
         {
-            title: "ACEs Awareness and Prevention Workshop", 
-            thumbnail: "https://img.youtube.com/vi/z9eoubnO-pE/maxresdefault.jpg",
+            title: "ACEs Awareness and Prevention Workshop",
+            thumbnail:
+                "https://img.youtube.com/vi/z9eoubnO-pE/maxresdefault.jpg",
             author: "Dr. Mark MacMillin",
             length: "55m",
             isComplete: true,
         },
         {
-            title: "Understanding the Neurobiology of Trauma", 
-            thumbnail: "https://img.youtube.com/vi/A0FZIwabctw/maxresdefault.jpg",
+            title: "Understanding the Neurobiology of Trauma",
+            thumbnail:
+                "https://img.youtube.com/vi/A0FZIwabctw/maxresdefault.jpg",
             author: "Dr. Kim Vander Dussen",
             length: "60m",
             isComplete: false,
-        }
-    ]
+        },
+    ];
     // End Dummy Data
 
     var [videosWatched, totalVideos] = [0, 0];
-    
+
     for (const video of videos) {
         totalVideos += 1;
         if (video.isComplete) {
             videosWatched += 1;
         }
     }
-    
+
     const completedCertificate = videosWatched == totalVideos;
 
     return (
@@ -110,18 +113,26 @@ const Videos = () => {
             <div className="video-library-header">
                 <div>
                     <p>Welcome back, {userName}</p>
-                    {completedCertificate ? 
-                        <h1>Training Complete</h1> :
-                        <h1><b>{videosWatched}/{totalVideos}</b> Videos Watched</h1>
-                    }
+                    {completedCertificate ? (
+                        <h1>Training Complete</h1>
+                    ) : (
+                        <h1>
+                            <b>
+                                {videosWatched}/{totalVideos}
+                            </b>{" "}
+                            Videos Watched
+                        </h1>
+                    )}
                 </div>
                 <button disabled={!completedCertificate}>
-                    {!completedCertificate && <img src={lockIcon} alt="Lock Icon" />}
+                    {!completedCertificate && (
+                        <img src={lockIcon} alt="Lock Icon" />
+                    )}
                     <h1>Certificate</h1>
                 </button>
             </div>
             <div className="video-library">
-                {videos.map(video => VideoCard(video))}
+                {videos.map((video) => VideoCard(video))}
             </div>
         </Styles>
     );

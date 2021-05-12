@@ -7,6 +7,7 @@ import MainLogo from "../../assets/logos/raise_logo_background_white.png";
 import { AccountContext } from "../auth/Accounts";
 import Avatar from "@material-ui/core/Avatar";
 import { useLocation } from "react-router-dom";
+import UserAPI from "../../api/User";
 const Styles = styled.div`
     .navdiv {
         background: rgb(1, 131, 225);
@@ -113,8 +114,7 @@ const MainNavbar = ({ loggedIn }) => {
                     if (res.status === 200) {
                         let data = res.data.users[0];
 
-                        // let initials = data.first_name[0] + data.last_name[0];
-                        let initials = "JS";
+                        let initials = data.first_name[0] + data.last_name[0];
                         setInitials(initials);
                     }
                 })
@@ -206,7 +206,7 @@ const MainNavbar = ({ loggedIn }) => {
                             <NavItem
                                 icon={
                                     <Avatar className="initials-avatar">
-                                        KH
+                                        {initials}
                                     </Avatar>
                                 }
                             >

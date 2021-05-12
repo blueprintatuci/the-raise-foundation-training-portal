@@ -32,21 +32,18 @@ const Styles = styled.div`
     .choice-btn span {
         padding-left: 10px;
     }
+
+    .choice-btn:hover {
+        color: var(--accent-color);
+    }
 `;
 
-const sampleChoices = [
-    { id: "1", text: "Choice 1", isCorrect: true },
-    { id: "2", text: "Choice 2", isCorrect: false },
-    { id: "3", text: "Choice 3", isCorrect: false },
-    { id: "4", text: "Choice 4", isCorrect: false },
-];
-
-const QuizQuestion = ({ updateUserChoices, number, questionObj, choices }) => {
+const QuizQuestion = ({ updateUserChoices, question }) => {
     const [activeChoice, setActiveChoice] = useState();
 
-    const selectChoice = (id) => {
-        setActiveChoice(id);
-        updateUserChoices({ questionId: 1, choiceId: id });
+    const selectChoice = (qid, cid) => {
+        setActiveChoice(cid);
+        updateUserChoices({ questionId: qid, choiceId: cid });
     };
 
     const getRadioStyle = (id) => {
@@ -59,14 +56,18 @@ const QuizQuestion = ({ updateUserChoices, number, questionObj, choices }) => {
     return (
         <Styles>
             <div className="question-container">
-                <div className="question">1. Sample Question?</div>
+                <div className="question">
+                    {question.id}. {question.text}
+                </div>
                 <div className="choices-container">
-                    {sampleChoices.map((choice) => {
+                    {question.choices.map((choice) => {
                         return (
                             <div
                                 className="choice-btn bg-slide"
                                 // style={getBackground(choice.id)}
-                                onClick={() => selectChoice(choice.id)}
+                                onClick={() =>
+                                    selectChoice(question.id, choice.id)
+                                }
                             >
                                 <FiberManualRecordIcon
                                     style={getRadioStyle(choice.id)}
