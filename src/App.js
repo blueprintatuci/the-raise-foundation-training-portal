@@ -38,7 +38,6 @@ function App() {
                                 return (
                                     <Login updateLoggedIn={updateLoggedIn} />
                                 );
-                                // NOTE: Update login component to update this prop
                             }}
                         />
                         <Route path="/signup" component={SignUp} />
@@ -47,8 +46,12 @@ function App() {
                             path="/account"
                             component={AccountInfo}
                         />
-                        <Route path="/videos" component={Videos} />
-                        <Route path="/video/:videoId" component={Video} />
+                        <Route exact path="/videos" component={Videos} />
+                        <Route
+                            exact
+                            path="/videos/:videoId"
+                            component={Video}
+                        />
                     </Switch>
                 </Styles>
                 <Footer />
