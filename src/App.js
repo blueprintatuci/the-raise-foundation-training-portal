@@ -50,10 +50,12 @@ function App() {
                             path="/account"
                             component={AccountInfo}
                         />
-                        <Route path="/videos" component={Videos} />
-                        <Route path="/video/:videoId" component={Video} />
-
-                        <Route path="/videos/:videoId/:quizId"></Route>
+                        <Route exact path="/videos/" component={Videos} />
+                        <Route
+                            exact
+                            path="/videos/:videoId"
+                            component={Video}
+                        />
                     </Switch>
                 </Styles>
                 <Footer />

@@ -1,13 +1,13 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
+
 import styled from "styled-components";
 
 const Styles = styled.div`
     width: 70%;
-    font-family: 'Raleway';
+    font-family: "Raleway";
     margin: 50px auto;
     display: block;
-
 
     .video-info {
         margin-top: 30px;
@@ -60,7 +60,7 @@ const Styles = styled.div`
         position: relative;
         margin-bottom: 60px;
     }
-    
+
     .video-player iframe {
         border: 0;
         height: 100%;
@@ -84,7 +84,7 @@ const Styles = styled.div`
                 align-items: center;
                 justify-content: center;
 
-                background-color: #0083E1;
+                background-color: #0083e1;
                 color: #fff;
                 font-size: 2em;
                 font-weight: 600;
@@ -98,19 +98,22 @@ const Styles = styled.div`
 `;
 
 const Video = () => {
-    const {videoId} = useParams()
+    // const { videoId } = useParams();
+
+    const videoId = useParams().videoId;
     console.log("ID", videoId);
-    
+
     // Dummy Data
     // Should load video info from backend.
     const video = {
-        title: "Recognizing the Nature and Extent of Prejudice", 
+        title: "Recognizing the Nature and Extent of Prejudice",
         thumbnail: "https://img.youtube.com/vi/21X5lGlDOfg/maxresdefault.jpg",
-        description: "A brief description about the contents of the video will go here, provided by The Raise Foundation. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus consectetur interdum. Ut sagittis id ante a tincidunt. Morbi bibendi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        description:
+            "A brief description about the contents of the video will go here, provided by The Raise Foundation. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus consectetur interdum. Ut sagittis id ante a tincidunt. Morbi bibendi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         author: "Dr. Gerardo Canul",
         length: "60m",
         isComplete: true,
-    }
+    };
 
     return (
         <Styles>
@@ -121,24 +124,31 @@ const Video = () => {
                     <h2>{video.author}</h2>
                 </div>
                 <div className="video-status">
-                    { video.isComplete ? 
-                        <p><span className="emoji">✅</span> Complete</p> : 
-                        <p><span className="emoji">❌</span> Incomplete</p> 
-                    }
+                    {video.isComplete ? (
+                        <p>
+                            <span className="emoji">✅</span> Complete
+                        </p>
+                    ) : (
+                        <p>
+                            <span className="emoji">❌</span> Incomplete
+                        </p>
+                    )}
                 </div>
             </div>
             <p className="video-description">{video.description}</p>
             <div className="video-player">
-                <iframe 
-                    src="https://www.youtube.com/embed/21X5lGlDOfg?controls=0" 
-                    title="YouTube video player" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                <iframe
+                    src="https://www.youtube.com/embed/21X5lGlDOfg?controls=0"
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                 ></iframe>
             </div>
             <div className="quiz-section">
-                <a href=""><div>Take Quiz</div></a>
+                <a href="">
+                    <div>Take Quiz</div>
+                </a>
             </div>
         </Styles>
     );
