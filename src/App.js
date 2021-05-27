@@ -46,8 +46,12 @@ function App() {
                             path="/account"
                             component={AccountInfo}
                         />
-                        <Route exact path="/videos" component={Videos} />
-                        <Route
+                        <ProtectedRoute
+                            exact
+                            path="/videos"
+                            component={Videos}
+                        />
+                        <ProtectedRoute
                             exact
                             path="/videos/:videoId"
                             component={Video}

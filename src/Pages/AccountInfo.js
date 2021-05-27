@@ -70,6 +70,7 @@ const AccountInfo = ({ jwtToken, userId }) => {
         UserAPI.getUserById(userId, jwtToken)
             .then((res) => {
                 if (res.status === 200) {
+                    console.log(res);
                     let data = res.data.users[0];
 
                     setAccountInfo(data);
