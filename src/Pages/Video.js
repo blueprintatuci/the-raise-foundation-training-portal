@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 
 const Styles = styled.div`
     width: 70%;
@@ -33,7 +33,7 @@ const Styles = styled.div`
     }
 
     .video-description {
-        margin: 30px 0;
+        margin-bottom: 30px;
     }
 
     .video-status {
@@ -94,22 +94,44 @@ const Styles = styled.div`
             }
         }
     }
+
+    .video-participants {
+        margin-bottom: 0.8rem;
+        .participant {
+            margin-right: 5px;
+            font-weight: 400;
+            font-size: 1.125em;
+            @media only screen and (max-width: 800px) {
+                font-size: 0.875em;
+            }
+        }
+    }
 `;
 
-const Video = ({ jwtToken }) => {
+const Video = ({ location }) => {
     const { videoId } = useParams();
 
+    console.log("Location:", location);
+    const video = location.state;
+
+    const embedUrl = (url) => {
+        let finalUrl =
+            url.replace("watch", "embed").replace("?v=", "/") +
+            "?rel=0&modestbranding=1";
+        return finalUrl;
+    };
     // Dummy Data
     // Should load video info from backend.
-    const video = {
-        title: "Recognizing the Nature and Extent of Prejudice",
-        thumbnail: "https://img.youtube.com/vi/21X5lGlDOfg/maxresdefault.jpg",
-        description:
-            "A brief description about the contents of the video will go here, provided by The Raise Foundation. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus consectetur interdum. Ut sagittis id ante a tincidunt. Morbi bibendi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        author: "Dr. Gerardo Canul",
-        length: "60m",
-        isComplete: true,
-    };
+
+    // const video = {
+    //     title: "Recognizing the Nature and Extent of Prejudice",
+    //     thumbnail: "https://img.youtube.com/vi/21X5lGlDOfg/maxresdefault.jpg",
+    //     description:
+    //         "A brief description about the contents of the video will go here, provided by The Raise Foundation. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus consectetur interdum. Ut sagittis id ante a tincidunt. Morbi bibendi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    //     author: "Dr. Gerardo Canul",
+    //     length: "60m",
+    //     isComplete: true,
+    // };
 
     return (
         <Styles>
@@ -117,7 +139,11 @@ const Video = ({ jwtToken }) => {
             <div className="video-info">
                 <div>
                     <h1>{video.title}</h1>
-                    <h2>{video.author}</h2>
+                    <div className="video-participants">
+                        {video.participants.map((p) => {
+                            return <span className="participant">{p}</span>;
+                        })}
+                    </div>
                 </div>
                 <div className="video-status">
                     {video.isComplete ? (
@@ -134,8 +160,8 @@ const Video = ({ jwtToken }) => {
             <p className="video-description">{video.description}</p>
             <div className="video-player">
                 <iframe
-                    src="https://www.youtube.com/embed/21X5lGlDOfg?controls=0"
-                    title="YouTube video player"
+                    src={embedUrl(video.url)}
+                    title={video.title}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen

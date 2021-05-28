@@ -4,6 +4,8 @@ import styled from "styled-components";
 import VideoCard from "../components/videos/VideoCard";
 import lockIcon from "../assets/icons/lock.png";
 import VideoAPI from "../api/Video";
+import UserAPI from "../api/User";
+import { useLocation, useParams } from "react-router-dom";
 
 //background: #f1f1f1;
 const Styles = styled.div`
@@ -31,21 +33,21 @@ const Styles = styled.div`
         color: #fff;
         border: none;
 
-        width: 300px;
-        height: 70px;
+        width: 250px;
+        height: 50px;
 
         display: flex;
         align-items: center;
         justify-content: center;
 
-        h1 {
-            font-size: 2em;
+        span {
+            font-size: 1.5rem;
             margin: auto 10px;
         }
 
         img {
-            width: 44px;
-            height: 44px;
+            width: 30px;
+            height: 30px;
         }
 
         @media only screen and (max-width: 800px) {
@@ -65,21 +67,36 @@ const Styles = styled.div`
         justify-content: space-around;
         flex-wrap: wrap;
     }
+
+    .videos-status {
+        font-size: 2rem;
+    }
 `;
 
-const Videos = ({ jwtToken }) => {
+const Videos = ({ userId, jwtToken }) => {
     // Dummy Data
     // userName and videos should be pulled from the backend
     const [videos, setVideos] = useState([]);
+    const [userInfo, setUserInfo] = useState([]);
     useEffect(() => {
         console.log("getting videos");
         VideoAPI.getVideos(jwtToken)
             .then((res) => {
                 if (res.status === 200) {
-                    let data = res;
+                    setVideos(res.data.videos);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
-                    setVideos(data);
-                    console.log(data);
+    useEffect(() => {
+        UserAPI.getUserById(userId, jwtToken)
+            .then((res) => {
+                if (res.status === 200) {
+                    console.log(res);
+                    setUserInfo(res.data.users[0]);
                 }
             })
             .catch((err) => {
@@ -130,27 +147,29 @@ const Videos = ({ jwtToken }) => {
         <Styles>
             <div className="video-library-header">
                 <div>
-                    <p>Welcome back, {userName}</p>
-                    {completedCertificate ? (
-                        <h1>Training Complete</h1>
-                    ) : (
-                        <h1>
-                            <b>
-                                {videosWatched}/{totalVideos}
-                            </b>{" "}
-                            Videos Watched
-                        </h1>
-                    )}
+                    <p>Welcome back, {userInfo && userInfo.first_name}</p>
+                    <div className="videos-status">
+                        {completedCertificate ? (
+                            <span>Training Complete</span>
+                        ) : (
+                            <span>
+                                <b>
+                                    {videosWatched}/{totalVideos}
+                                </b>{" "}
+                                Videos Watched
+                            </span>
+                        )}
+                    </div>
                 </div>
                 <button disabled={!completedCertificate}>
                     {!completedCertificate && (
                         <img src={lockIcon} alt="Lock Icon" />
                     )}
-                    <h1>Certificate</h1>
+                    <span>Certificate</span>
                 </button>
             </div>
             <div className="video-library">
-                {testVideos.map((video) => VideoCard(video))}
+                {videos && videos.map((video) => VideoCard(video))}
             </div>
         </Styles>
     );
