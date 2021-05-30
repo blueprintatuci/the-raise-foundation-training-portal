@@ -74,12 +74,9 @@ const Styles = styled.div`
 `;
 
 const Videos = ({ userId, jwtToken }) => {
-    // Dummy Data
-    // userName and videos should be pulled from the backend
     const [videos, setVideos] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
     useEffect(() => {
-        console.log("getting videos");
         VideoAPI.getVideos(jwtToken)
             .then((res) => {
                 if (res.status === 200) {
@@ -95,7 +92,6 @@ const Videos = ({ userId, jwtToken }) => {
         UserAPI.getUserById(userId, jwtToken)
             .then((res) => {
                 if (res.status === 200) {
-                    console.log(res);
                     setUserInfo(res.data.users[0]);
                 }
             })

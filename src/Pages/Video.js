@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import VideoAPI from "../api/Video";
 
 const Styles = styled.div`
     width: 70%;
@@ -38,7 +39,7 @@ const Styles = styled.div`
 
     .video-status {
         text-transform: uppercase;
-        font-size: 1.25em;
+        font-size: 1rem;
         margin-left: 30px;
         width: 25%;
         text-align: right;
@@ -108,11 +109,23 @@ const Styles = styled.div`
     }
 `;
 
-const Video = ({ location }) => {
+const Video = ({ jwtToken }) => {
     const { videoId } = useParams();
 
-    console.log("Location:", location);
-    const video = location.state;
+    const [video, setVideo] = useState();
+
+    useEffect(() => {
+        VideoAPI.getVideoById(videoId, jwtToken)
+            .then((res) => {
+                if (res.status === 200) {
+                    console.log(res);
+                    setVideo(res.data.videos[0]);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
     const embedUrl = (url) => {
         let finalUrl =
@@ -120,6 +133,7 @@ const Video = ({ location }) => {
             "?rel=0&modestbranding=1";
         return finalUrl;
     };
+
     // Dummy Data
     // Should load video info from backend.
 
@@ -136,42 +150,48 @@ const Video = ({ location }) => {
     return (
         <Styles>
             <a href="/videos">Back to Video Library</a>
-            <div className="video-info">
-                <div>
-                    <h1>{video.title}</h1>
-                    <div className="video-participants">
-                        {video.participants.map((p) => {
-                            return <span className="participant">{p}</span>;
-                        })}
+            {video && (
+                <div classname="video-player">
+                    <div className="video-info">
+                        <div>
+                            <h1>{video.title}</h1>
+                            <div className="video-participants">
+                                {video.participants.map((p) => {
+                                    return (
+                                        <span className="participant">{p}</span>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        <div className="video-status">
+                            {video.isComplete ? (
+                                <p>
+                                    <span className="emoji">✅</span> Complete
+                                </p>
+                            ) : (
+                                <p>
+                                    <span className="emoji">❌</span> Incomplete
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                    <p className="video-description">{video.description}</p>
+                    <div className="video-player">
+                        <iframe
+                            src={embedUrl(video.url)}
+                            title={video.title}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        ></iframe>
+                    </div>
+                    <div className="quiz-section">
+                        <a href="">
+                            <div>Take Quiz</div>
+                        </a>
                     </div>
                 </div>
-                <div className="video-status">
-                    {video.isComplete ? (
-                        <p>
-                            <span className="emoji">✅</span> Complete
-                        </p>
-                    ) : (
-                        <p>
-                            <span className="emoji">❌</span> Incomplete
-                        </p>
-                    )}
-                </div>
-            </div>
-            <p className="video-description">{video.description}</p>
-            <div className="video-player">
-                <iframe
-                    src={embedUrl(video.url)}
-                    title={video.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                ></iframe>
-            </div>
-            <div className="quiz-section">
-                <a href="">
-                    <div>Take Quiz</div>
-                </a>
-            </div>
+            )}
         </Styles>
     );
 };

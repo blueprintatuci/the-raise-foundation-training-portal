@@ -97,7 +97,6 @@ const VideoCard = (video) => {
             <StyledLink
                 to={{
                     pathname: `videos/watch/${video.video_id}`,
-                    state: video,
                 }}
             >
                 <div className="video-card" onClick={watchVideo}>
