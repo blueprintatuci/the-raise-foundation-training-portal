@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import VideoCard from "../components/videos/VideoCard";
 import lockIcon from "../assets/icons/lock.png";
-import VideoAPI from "../api/Video";
-import UserAPI from "../api/User";
-import { useLocation, useParams } from "react-router-dom";
-
 //background: #f1f1f1;
 const Styles = styled.div`
     font-family: "Raleway";
@@ -33,21 +29,21 @@ const Styles = styled.div`
         color: #fff;
         border: none;
 
-        width: 250px;
-        height: 50px;
+        width: 300px;
+        height: 70px;
 
         display: flex;
         align-items: center;
         justify-content: center;
 
-        span {
-            font-size: 1.5rem;
+        h1 {
+            font-size: 2em;
             margin: auto 10px;
         }
 
         img {
-            width: 30px;
-            height: 30px;
+            width: 44px;
+            height: 44px;
         }
 
         @media only screen and (max-width: 800px) {
@@ -67,40 +63,13 @@ const Styles = styled.div`
         justify-content: space-around;
         flex-wrap: wrap;
     }
-
-    .videos-status {
-        font-size: 2rem;
-    }
 `;
 
-const Videos = ({ userId, jwtToken }) => {
-    const [videos, setVideos] = useState([]);
-    const [userInfo, setUserInfo] = useState([]);
-    useEffect(() => {
-        VideoAPI.getVideos(jwtToken)
-            .then((res) => {
-                if (res.status === 200) {
-                    setVideos(res.data.videos);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
-
-    useEffect(() => {
-        UserAPI.getUserById(userId, jwtToken)
-            .then((res) => {
-                if (res.status === 200) {
-                    setUserInfo(res.data.users[0]);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
+const Videos = () => {
+    // Dummy Data
+    // userName and videos should be pulled from the backend
     const userName = "Chase";
-    const testVideos = [
+    const videos = [
         {
             title: "Recognizing the Nature and Extent of Prejudice",
             thumbnail:
@@ -128,41 +97,42 @@ const Videos = ({ userId, jwtToken }) => {
     ];
     // End Dummy Data
 
-    const completedCertificate =
-        userInfo && videos && userInfo.videos_watched
-            ? userInfo.videos_watched.length === videos.length
-            : false;
+    var [videosWatched, totalVideos] = [0, 0];
+
+    for (const video of videos) {
+        totalVideos += 1;
+        if (video.isComplete) {
+            videosWatched += 1;
+        }
+    }
+
+    const completedCertificate = videosWatched == totalVideos;
 
     return (
         <Styles>
             <div className="video-library-header">
                 <div>
-                    <p>Welcome back, {userInfo && userInfo.first_name}</p>
-                    <div className="videos-status">
-                        {completedCertificate ? (
-                            <span>Training Complete</span>
-                        ) : (
-                            <span>
-                                <b>
-                                    {userInfo &&
-                                        userInfo.videos_watched &&
-                                        userInfo.videos_watched.length}{" "}
-                                    /{videos.length}
-                                </b>{" "}
-                                Videos Watched
-                            </span>
-                        )}
-                    </div>
+                    <p>Welcome back, {userName}</p>
+                    {completedCertificate ? (
+                        <h1>Training Complete</h1>
+                    ) : (
+                        <h1>
+                            <b>
+                                {videosWatched}/{totalVideos}
+                            </b>{" "}
+                            Videos Watched
+                        </h1>
+                    )}
                 </div>
                 <button disabled={!completedCertificate}>
                     {!completedCertificate && (
                         <img src={lockIcon} alt="Lock Icon" />
                     )}
-                    <span>Certificate</span>
+                    <h1>Certificate</h1>
                 </button>
             </div>
             <div className="video-library">
-                {videos && videos.map((video) => VideoCard(video))}
+                {videos.map((video) => VideoCard(video))}
             </div>
         </Styles>
     );

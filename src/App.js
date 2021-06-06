@@ -5,6 +5,7 @@ import MainNavbar from "./components/standard/Navigation.js";
 import Footer from "./components/standard/Footer";
 import SignUp from "./pages/SignUp";
 import AccountInfo from "./pages/AccountInfo";
+import Quiz from "./pages/Quiz";
 import Login from "./pages/Login";
 import "./App.css";
 import styled from "styled-components";
@@ -35,9 +36,16 @@ function App() {
                         path="/login"
                         render={() => {
                             return <Login updateLoggedIn={updateLoggedIn} />;
+                            // NOTE: Update login component to update this prop
                         }}
                     />
+
                     <Route path="/signup" component={SignUp} />
+                    <ProtectedRoute
+                        exact
+                        path="/account"
+                        component={AccountInfo}
+                    />
                     <ProtectedRoute
                         exact
                         path="/account"
@@ -48,6 +56,12 @@ function App() {
                         exact
                         path="/videos/watch/:videoId"
                         component={Video}
+                    />
+
+                    <ProtectedRoute
+                        exact
+                        path="/videos/quiz/:videoId"
+                        component={Quiz}
                     />
                 </Switch>
             </Styles>

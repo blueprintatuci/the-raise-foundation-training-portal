@@ -114,8 +114,7 @@ const MainNavbar = ({ loggedIn }) => {
                     if (res.status === 200) {
                         let data = res.data.users[0];
 
-                        // let initials = data.first_name[0] + data.last_name[0];
-                        let initials = "JS";
+                        let initials = data.first_name[0] + data.last_name[0];
                         setInitials(initials);
                     }
                 })
@@ -207,7 +206,7 @@ const MainNavbar = ({ loggedIn }) => {
                             <NavItem
                                 icon={
                                     <Avatar className="initials-avatar">
-                                        KH
+                                        {initials}
                                     </Avatar>
                                 }
                             >

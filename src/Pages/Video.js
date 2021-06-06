@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import VideoAPI from "../api/Video";
 
 const Styles = styled.div`
@@ -74,25 +74,26 @@ const Styles = styled.div`
         display: flex;
         justify-content: center;
 
-        a {
+        div {
             text-decoration: none;
-            width: 330px;
-            height: 88px;
+            width: 300px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            div {
-                display: flex;
-                align-items: center;
-                justify-content: center;
+            background-color: #0083e1;
+            color: #fff;
+            font-size: 2em;
+            font-weight: 600;
+        }
 
-                background-color: #0083e1;
-                color: #fff;
-                font-size: 2em;
-                font-weight: 600;
-            }
+        div:hover {
+            cursor: pointer;
+        }
 
-            @media only screen and (max-width: 800px) {
-                width: 70%;
-            }
+        @media only screen and (max-width: 800px) {
+            width: 70%;
         }
     }
 
@@ -111,6 +112,8 @@ const Styles = styled.div`
 
 const Video = ({ jwtToken }) => {
     const { videoId } = useParams();
+
+    const history = useHistory();
 
     const [video, setVideo] = useState();
 
@@ -132,6 +135,10 @@ const Video = ({ jwtToken }) => {
             url.replace("watch", "embed").replace("?v=", "/") +
             "?rel=0&modestbranding=1";
         return finalUrl;
+    };
+
+    const toQuiz = (videoid) => {
+        history.push(`/videos/quiz/${videoId}`);
     };
 
     // Dummy Data
@@ -186,9 +193,13 @@ const Video = ({ jwtToken }) => {
                         ></iframe>
                     </div>
                     <div className="quiz-section">
-                        <a href="">
-                            <div>Take Quiz</div>
-                        </a>
+                        <div
+                            onClick={() => {
+                                toQuiz(video.videoId);
+                            }}
+                        >
+                            Take Quiz
+                        </div>
                     </div>
                 </div>
             )}
