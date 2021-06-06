@@ -1,13 +1,13 @@
-import React from "react";
-import { useParams } from "react-router";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import VideoAPI from "../api/Video";
 
 const Styles = styled.div`
     width: 70%;
-    font-family: 'Raleway';
+    font-family: "Raleway";
     margin: 50px auto;
     display: block;
-
 
     .video-info {
         margin-top: 30px;
@@ -34,12 +34,12 @@ const Styles = styled.div`
     }
 
     .video-description {
-        margin: 30px 0;
+        margin-bottom: 30px;
     }
 
     .video-status {
         text-transform: uppercase;
-        font-size: 1.25em;
+        font-size: 1rem;
         margin-left: 30px;
         width: 25%;
         text-align: right;
@@ -60,7 +60,7 @@ const Styles = styled.div`
         position: relative;
         margin-bottom: 60px;
     }
-    
+
     .video-player iframe {
         border: 0;
         height: 100%;
@@ -84,7 +84,7 @@ const Styles = styled.div`
                 align-items: center;
                 justify-content: center;
 
-                background-color: #0083E1;
+                background-color: #0083e1;
                 color: #fff;
                 font-size: 2em;
                 font-weight: 600;
@@ -95,51 +95,103 @@ const Styles = styled.div`
             }
         }
     }
+
+    .video-participants {
+        margin-bottom: 0.8rem;
+        .participant {
+            margin-right: 5px;
+            font-weight: 400;
+            font-size: 1.125em;
+            @media only screen and (max-width: 800px) {
+                font-size: 0.875em;
+            }
+        }
+    }
 `;
 
-const Video = () => {
-    const {videoId} = useParams()
-    console.log("ID", videoId);
-    
+const Video = ({ jwtToken }) => {
+    const { videoId } = useParams();
+
+    const [video, setVideo] = useState();
+
+    useEffect(() => {
+        VideoAPI.getVideoById(videoId, jwtToken)
+            .then((res) => {
+                if (res.status === 200) {
+                    console.log(res);
+                    setVideo(res.data.videos[0]);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
+
+    const embedUrl = (url) => {
+        let finalUrl =
+            url.replace("watch", "embed").replace("?v=", "/") +
+            "?rel=0&modestbranding=1";
+        return finalUrl;
+    };
+
     // Dummy Data
     // Should load video info from backend.
-    const video = {
-        title: "Recognizing the Nature and Extent of Prejudice", 
-        thumbnail: "https://img.youtube.com/vi/21X5lGlDOfg/maxresdefault.jpg",
-        description: "A brief description about the contents of the video will go here, provided by The Raise Foundation. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus consectetur interdum. Ut sagittis id ante a tincidunt. Morbi bibendi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        author: "Dr. Gerardo Canul",
-        length: "60m",
-        isComplete: true,
-    }
+
+    // const video = {
+    //     title: "Recognizing the Nature and Extent of Prejudice",
+    //     thumbnail: "https://img.youtube.com/vi/21X5lGlDOfg/maxresdefault.jpg",
+    //     description:
+    //         "A brief description about the contents of the video will go here, provided by The Raise Foundation. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus consectetur interdum. Ut sagittis id ante a tincidunt. Morbi bibendi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    //     author: "Dr. Gerardo Canul",
+    //     length: "60m",
+    //     isComplete: true,
+    // };
 
     return (
         <Styles>
             <a href="/videos">Back to Video Library</a>
-            <div className="video-info">
-                <div>
-                    <h1>{video.title}</h1>
-                    <h2>{video.author}</h2>
+            {video && (
+                <div classname="video-player">
+                    <div className="video-info">
+                        <div>
+                            <h1>{video.title}</h1>
+                            <div className="video-participants">
+                                {video.participants.map((p) => {
+                                    return (
+                                        <span className="participant">{p}</span>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        <div className="video-status">
+                            {video.isComplete ? (
+                                <p>
+                                    <span className="emoji">✅</span> Complete
+                                </p>
+                            ) : (
+                                <p>
+                                    <span className="emoji">❌</span> Incomplete
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                    <p className="video-description">{video.description}</p>
+                    <div className="video-player">
+                        <iframe
+                            src={embedUrl(video.url)}
+                            title={video.title}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        ></iframe>
+                    </div>
+                    <div className="quiz-section">
+                        <a href="">
+                            <div>Take Quiz</div>
+                        </a>
+                    </div>
                 </div>
-                <div className="video-status">
-                    { video.isComplete ? 
-                        <p><span className="emoji">✅</span> Complete</p> : 
-                        <p><span className="emoji">❌</span> Incomplete</p> 
-                    }
-                </div>
-            </div>
-            <p className="video-description">{video.description}</p>
-            <div className="video-player">
-                <iframe 
-                    src="https://www.youtube.com/embed/21X5lGlDOfg?controls=0" 
-                    title="YouTube video player" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                ></iframe>
-            </div>
-            <div className="quiz-section">
-                <a href=""><div>Take Quiz</div></a>
-            </div>
+            )}
         </Styles>
     );
 };

@@ -10,6 +10,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import UserAPI from "../api/User";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { useLocation, useParams } from "react-router-dom";
 
 const Styles = styled.div`
     background: white;
@@ -58,6 +59,8 @@ const Styles = styled.div`
 `;
 
 const AccountInfo = ({ jwtToken, userId }) => {
+    let location = useLocation();
+    console.log(location);
     const [edit, setEdit] = useState(false);
 
     const [toasterOpened, setToasterOpened] = useState(false);
@@ -70,6 +73,7 @@ const AccountInfo = ({ jwtToken, userId }) => {
         UserAPI.getUserById(userId, jwtToken)
             .then((res) => {
                 if (res.status === 200) {
+                    console.log(res);
                     let data = res.data.users[0];
 
                     setAccountInfo(data);

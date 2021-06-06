@@ -10,7 +10,7 @@ import "./App.css";
 import styled from "styled-components";
 import { Account } from "./components/auth/Accounts";
 import ProtectedRoute from "./components/standard/ProtectedRoute";
-import Videos from "./pages/Videos";
+import Videos from "./pages/VideoLibrary";
 import Video from "./pages/Video";
 
 const Styles = styled.div`
@@ -25,37 +25,33 @@ function App() {
     };
     return (
         <Account>
-            <Router>
-                <Styles>
-                    <MainNavbar loggedIn={loggedIn} />
+            <Styles>
+                <MainNavbar loggedIn={loggedIn} />
 
-                    <Switch>
-                        <Route exact path="/" component={HomePage} />
-                        <Route
-                            exact
-                            path="/login"
-                            render={() => {
-                                return (
-                                    <Login updateLoggedIn={updateLoggedIn} />
-                                );
-                            }}
-                        />
-                        <Route path="/signup" component={SignUp} />
-                        <ProtectedRoute
-                            exact
-                            path="/account"
-                            component={AccountInfo}
-                        />
-                        <Route exact path="/videos" component={Videos} />
-                        <Route
-                            exact
-                            path="/videos/:videoId"
-                            component={Video}
-                        />
-                    </Switch>
-                </Styles>
-                <Footer />
-            </Router>
+                <Switch>
+                    <Route exact path="/" component={HomePage} />
+                    <Route
+                        exact
+                        path="/login"
+                        render={() => {
+                            return <Login updateLoggedIn={updateLoggedIn} />;
+                        }}
+                    />
+                    <Route path="/signup" component={SignUp} />
+                    <ProtectedRoute
+                        exact
+                        path="/account"
+                        component={AccountInfo}
+                    />
+                    <ProtectedRoute exact path="/videos" component={Videos} />
+                    <ProtectedRoute
+                        exact
+                        path="/videos/watch/:videoId"
+                        component={Video}
+                    />
+                </Switch>
+            </Styles>
+            <Footer />
         </Account>
     );
 }
